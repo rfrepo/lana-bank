@@ -4103,6 +4103,22 @@ export type GetRealtimePriceUpdatesQueryVariables = Exact<{ [key: string]: never
 
 export type GetRealtimePriceUpdatesQuery = { __typename?: 'Query', realtimePrice: { __typename?: 'RealtimePrice', usdCentsPerBtc: UsdCents } };
 
+export type DepositAccountDetailsFragmentFragment = { __typename?: 'DepositAccount', id: string, depositAccountId: string, customerId: string, createdAt: any, status: DepositAccountStatus, publicId: any, balance: { __typename?: 'DepositAccountBalance', settled: UsdCents, pending: UsdCents }, ledgerAccounts: { __typename?: 'DepositAccountLedgerAccounts', depositAccountId: string, frozenDepositAccountId: string }, customer: { __typename?: 'Customer', id: string, customerId: string, publicId: any, email: string, telegramId: string } };
+
+export type GetDepositAccountByPublicIdQueryVariables = Exact<{
+  publicId: Scalars['PublicId']['input'];
+}>;
+
+
+export type GetDepositAccountByPublicIdQuery = { __typename?: 'Query', publicIdTarget?:
+    | { __typename: 'CreditFacility' }
+    | { __typename: 'CreditFacilityDisbursal' }
+    | { __typename: 'Customer' }
+    | { __typename: 'Deposit' }
+    | { __typename: 'DepositAccount', id: string, depositAccountId: string, customerId: string, createdAt: any, status: DepositAccountStatus, publicId: any, balance: { __typename?: 'DepositAccountBalance', settled: UsdCents, pending: UsdCents }, ledgerAccounts: { __typename?: 'DepositAccountLedgerAccounts', depositAccountId: string, frozenDepositAccountId: string }, customer: { __typename?: 'Customer', id: string, customerId: string, publicId: any, email: string, telegramId: string } }
+    | { __typename: 'Withdrawal' }
+   | null };
+
 export type LoanAgreementGenerateMutationVariables = Exact<{
   input: LoanAgreementGenerateInput;
 }>;
@@ -4965,6 +4981,31 @@ export const WithdrawalFieldsFragmentDoc = gql`
       customerId
       email
     }
+  }
+}
+    `;
+export const DepositAccountDetailsFragmentFragmentDoc = gql`
+    fragment DepositAccountDetailsFragment on DepositAccount {
+  id
+  depositAccountId
+  customerId
+  createdAt
+  status
+  publicId
+  balance {
+    settled
+    pending
+  }
+  ledgerAccounts {
+    depositAccountId
+    frozenDepositAccountId
+  }
+  customer {
+    id
+    customerId
+    publicId
+    email
+    telegramId
   }
 }
     `;
@@ -10107,6 +10148,49 @@ export type GetRealtimePriceUpdatesQueryHookResult = ReturnType<typeof useGetRea
 export type GetRealtimePriceUpdatesLazyQueryHookResult = ReturnType<typeof useGetRealtimePriceUpdatesLazyQuery>;
 export type GetRealtimePriceUpdatesSuspenseQueryHookResult = ReturnType<typeof useGetRealtimePriceUpdatesSuspenseQuery>;
 export type GetRealtimePriceUpdatesQueryResult = Apollo.QueryResult<GetRealtimePriceUpdatesQuery, GetRealtimePriceUpdatesQueryVariables>;
+export const GetDepositAccountByPublicIdDocument = gql`
+    query GetDepositAccountByPublicId($publicId: PublicId!) {
+  publicIdTarget(id: $publicId) {
+    __typename
+    ... on DepositAccount {
+      ...DepositAccountDetailsFragment
+    }
+  }
+}
+    ${DepositAccountDetailsFragmentFragmentDoc}`;
+
+/**
+ * __useGetDepositAccountByPublicIdQuery__
+ *
+ * To run a query within a React component, call `useGetDepositAccountByPublicIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetDepositAccountByPublicIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetDepositAccountByPublicIdQuery({
+ *   variables: {
+ *      publicId: // value for 'publicId'
+ *   },
+ * });
+ */
+export function useGetDepositAccountByPublicIdQuery(baseOptions: Apollo.QueryHookOptions<GetDepositAccountByPublicIdQuery, GetDepositAccountByPublicIdQueryVariables> & ({ variables: GetDepositAccountByPublicIdQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetDepositAccountByPublicIdQuery, GetDepositAccountByPublicIdQueryVariables>(GetDepositAccountByPublicIdDocument, options);
+      }
+export function useGetDepositAccountByPublicIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetDepositAccountByPublicIdQuery, GetDepositAccountByPublicIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetDepositAccountByPublicIdQuery, GetDepositAccountByPublicIdQueryVariables>(GetDepositAccountByPublicIdDocument, options);
+        }
+export function useGetDepositAccountByPublicIdSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetDepositAccountByPublicIdQuery, GetDepositAccountByPublicIdQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetDepositAccountByPublicIdQuery, GetDepositAccountByPublicIdQueryVariables>(GetDepositAccountByPublicIdDocument, options);
+        }
+export type GetDepositAccountByPublicIdQueryHookResult = ReturnType<typeof useGetDepositAccountByPublicIdQuery>;
+export type GetDepositAccountByPublicIdLazyQueryHookResult = ReturnType<typeof useGetDepositAccountByPublicIdLazyQuery>;
+export type GetDepositAccountByPublicIdSuspenseQueryHookResult = ReturnType<typeof useGetDepositAccountByPublicIdSuspenseQuery>;
+export type GetDepositAccountByPublicIdQueryResult = Apollo.QueryResult<GetDepositAccountByPublicIdQuery, GetDepositAccountByPublicIdQueryVariables>;
 export const LoanAgreementGenerateDocument = gql`
     mutation LoanAgreementGenerate($input: LoanAgreementGenerateInput!) {
   loanAgreementGenerate(input: $input) {

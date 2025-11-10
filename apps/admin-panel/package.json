@@ -18,7 +18,9 @@
     "lint:fix": "eslint --max-warnings 0 --fix --ext .ts,.tsx .",
     "cypress:run-ui": "cypress open",
     "cypress:run-headless": "cypress run",
-    "local:pdf": "cd cypress/manuals && ./local-pdf.sh"
+    "local:pdf": "cd cypress/manuals && ./local-pdf.sh",
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "dependencies": {
     "@apollo/client": "^3.13.9",
@@ -59,7 +61,10 @@
     "@storybook/addon-postcss": "^2.0.0",
     "@storybook/nextjs": "^10.0.4",
     "@svgr/webpack": "^8.1.0",
+    "@testing-library/jest-dom": "^6.1.5",
+    "@testing-library/react": "^14.1.2",
     "@types/apollo-upload-client": "^18.0.0",
+    "@types/jest": "^29.5.12",
     "@types/lodash": "^4.17.20",
     "@types/node": "20",
     "@types/react": "19.2.2",
@@ -74,6 +79,8 @@
     "eslint-plugin-prettier": "^5.5.4",
     "eslint-plugin-storybook": "^10.0.4",
     "graphql-codegen-typescript-mock-data": "^5.0.2",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
     "lodash": "^4.17.21",
     "postcss": "^8",
     "prettier": "^3.6.2",
