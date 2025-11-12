@@ -1,3 +1,4 @@
+import { expect, it, describe, beforeEach } from "@jest/globals"
 import { renderHook } from "@testing-library/react"
 import { useDepositAccount } from "../use-deposit-account"
 import {
@@ -29,7 +30,7 @@ const createMockReturnValue = (
 })
 
 describe("useDepositAccount", () => {
-  beforeEach(() => jest.clearAllMocks())
+  beforeEach(() => void jest.clearAllMocks())
 
   it("should call useGetDepositAccountByPublicIdQuery with correct parameters", () => {
     const publicId = "12345"
@@ -62,7 +63,7 @@ describe("useDepositAccount", () => {
 
   it("should set depositAccount when data.publicIdTarget is a DepositAccount", () => {
     const mockAccount = mockDepositAccount() as DepositAccount
-    
+
     mockUseGetDepositAccountByPublicIdQuery.mockReturnValue(
       createMockReturnValue({
         data: {
