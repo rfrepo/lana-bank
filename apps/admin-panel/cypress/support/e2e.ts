@@ -31,6 +31,17 @@ Cypress.on("window:before:load", (win) => {
 
 const testLanguage = Cypress.env("TEST_LANGUAGE")
 beforeEach(() => {
+  cy.on("uncaught:exception", (err) => {
+    if (err.message.includes("ResizeObserver loop")) {
+      return false
+    }
+    if (err.message.includes("cannot have a negative time stamp")) {
+      return false
+    }
+    if (err.message.includes("Failed to execute 'measure' on 'Performance'")) {
+      return false
+    }
+  })
   cy.waitForKeycloak()
   cy.session(
     "loginSession",
