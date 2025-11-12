@@ -510,9 +510,8 @@ const PaginatedTable = <T,>({
                           <DropdownMenuTrigger asChild>
                             <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
                               <HiFilter
-                                className={`h-4 w-4 ${
-                                  filterState[col.key] ? "text-blue-500" : ""
-                                }`}
+                                className={`h-4 w-4 ${filterState[col.key] ? "text-blue-500" : ""
+                                  }`}
                               />
                             </Button>
                           </DropdownMenuTrigger>
@@ -550,9 +549,8 @@ const PaginatedTable = <T,>({
                   data-testid={`table-row-${idx}`}
                   onClick={() => onClick?.(node)}
                   tabIndex={0}
-                  className={`${onClick ? "cursor-pointer" : ""} ${
-                    focusedRowIndex === idx ? "bg-muted" : ""
-                  } hover:bg-muted/50 transition-colors outline-none`}
+                  className={`${onClick ? "cursor-pointer" : ""} ${focusedRowIndex === idx ? "bg-muted" : ""
+                    } hover:bg-muted/50 transition-colors outline-none`}
                   onFocus={() => setFocusedRowIndex(idx)}
                   role="row"
                   aria-selected={focusedRowIndex === idx}
@@ -575,6 +573,7 @@ const PaginatedTable = <T,>({
                     <TableCell>
                       <Link href={navigateTo(node)}>
                         <Button
+                          data-testid={`view-button-${idx}`}
                           variant="outline"
                           className="w-full flex items-center justify-between"
                         >
@@ -593,9 +592,8 @@ const PaginatedTable = <T,>({
                       key={`sub-row-${idx}-${subIdx}`}
                       onClick={() => onClick?.(subRow)}
                       tabIndex={0}
-                      className={`${onClick ? "cursor-pointer" : ""} ${
-                        focusedRowIndex === idx ? "bg-muted" : ""
-                      } hover:bg-muted/50 transition-colors outline-none`}
+                      className={`${onClick ? "cursor-pointer" : ""} ${focusedRowIndex === idx ? "bg-muted" : ""
+                        } hover:bg-muted/50 transition-colors outline-none`}
                     >
                       {columns.map((col, colIdx) => (
                         <TableCell

@@ -36,6 +36,7 @@ export function AppSidebar({ appVersion, ...props }: AppSidebarProps) {
     navFinanceItems,
     navAccountingItems,
     navGovernanceItems,
+    navDepositAccountsItems,
   } = useNavItems()
 
   return (
@@ -46,6 +47,7 @@ export function AppSidebar({ appVersion, ...props }: AppSidebarProps) {
       <SidebarContent className="mt-4">
         <NavSection items={navDashboardItems} />
         <NavSection items={navLoansItems} label={t("labels.loans")} />
+        <NavSection items={navDepositAccountsItems} label={t("labels.accounts")} />
         <NavSection items={navTransactionItems} label={t("labels.transactions")} />
         <NavSection items={navAdminItems} label={t("labels.administration")} />
         <NavSection items={navGovernanceItems} label={t("labels.governance")} />

@@ -3465,6 +3465,16 @@ export type DashboardQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type DashboardQuery = { __typename?: 'Query', dashboard: { __typename?: 'Dashboard', activeFacilities: number, pendingFacilities: number, totalDisbursed: UsdCents, totalCollateral: Satoshis } };
 
+export type CustomersWithDepositAccountsQueryVariables = Exact<{
+  first: Scalars['Int']['input'];
+  after?: InputMaybe<Scalars['String']['input']>;
+  sort?: InputMaybe<CustomersSort>;
+  filter?: InputMaybe<CustomersFilter>;
+}>;
+
+
+export type CustomersWithDepositAccountsQuery = { __typename?: 'Query', customers: { __typename?: 'CustomerConnection', edges: Array<{ __typename?: 'CustomerEdge', cursor: string, node: { __typename?: 'Customer', id: string, customerId: string, email: string, depositAccount?: { __typename: 'DepositAccount', id: string, depositAccountId: string, publicId: any, status: DepositAccountStatus, balance: { __typename?: 'DepositAccountBalance', settled: UsdCents, pending: UsdCents } } | null } }>, pageInfo: { __typename?: 'PageInfo', endCursor?: string | null, startCursor?: string | null, hasNextPage: boolean, hasPreviousPage: boolean } } };
+
 export type DepositDetailsPageFragmentFragment = { __typename?: 'Deposit', id: string, depositId: string, publicId: any, amount: UsdCents, createdAt: any, reference: string, status: DepositStatus, ledgerTransactions: Array<{ __typename?: 'LedgerTransaction', id: string, ledgerTransactionId: string, createdAt: any, effective: any, description?: string | null }>, account: { __typename?: 'DepositAccount', customer: { __typename?: 'Customer', id: string, customerId: string, publicId: any, applicantId?: string | null, email: string, depositAccount?: { __typename?: 'DepositAccount', balance: { __typename?: 'DepositAccountBalance', settled: UsdCents, pending: UsdCents } } | null } } };
 
 export type GetDepositDetailsQueryVariables = Exact<{
@@ -3585,7 +3595,7 @@ export type AccountingCsvDownloadLinkGenerateMutation = { __typename?: 'Mutation
 export type LedgerAccountDetailsFragment = { __typename?: 'LedgerAccount', id: string, ledgerAccountId: string, name: string, code?: any | null, entity?:
     | { __typename: 'Collateral', creditFacility: { __typename?: 'CreditFacility', publicId: any } }
     | { __typename: 'CreditFacility', publicId: any }
-    | { __typename: 'DepositAccount', depositAccountId: string, customer: { __typename?: 'Customer', publicId: any } }
+    | { __typename: 'DepositAccount', depositAccountId: string, publicId: any, customer: { __typename?: 'Customer', publicId: any } }
    | null, ancestors: Array<{ __typename?: 'LedgerAccount', id: string, ledgerAccountId: string, name: string, code?: any | null }>, children: Array<{ __typename?: 'LedgerAccount', id: string, ledgerAccountId: string, name: string, code?: any | null }>, balanceRange:
     | { __typename: 'BtcLedgerAccountBalanceRange', close: { __typename?: 'BtcLedgerAccountBalance', btcSettled: { __typename?: 'BtcBalanceDetails', debit: Satoshis, credit: Satoshis, net: SignedSatoshis } } }
     | { __typename: 'UsdLedgerAccountBalanceRange', close: { __typename?: 'UsdLedgerAccountBalance', usdSettled: { __typename?: 'UsdBalanceDetails', debit: UsdCents, credit: UsdCents, net: SignedUsdCents } } }
@@ -3604,7 +3614,7 @@ export type LedgerAccountByCodeQueryVariables = Exact<{
 export type LedgerAccountByCodeQuery = { __typename?: 'Query', ledgerAccountByCode?: { __typename?: 'LedgerAccount', id: string, ledgerAccountId: string, name: string, code?: any | null, entity?:
       | { __typename: 'Collateral', creditFacility: { __typename?: 'CreditFacility', publicId: any } }
       | { __typename: 'CreditFacility', publicId: any }
-      | { __typename: 'DepositAccount', depositAccountId: string, customer: { __typename?: 'Customer', publicId: any } }
+      | { __typename: 'DepositAccount', depositAccountId: string, publicId: any, customer: { __typename?: 'Customer', publicId: any } }
      | null, ancestors: Array<{ __typename?: 'LedgerAccount', id: string, ledgerAccountId: string, name: string, code?: any | null }>, children: Array<{ __typename?: 'LedgerAccount', id: string, ledgerAccountId: string, name: string, code?: any | null }>, balanceRange:
       | { __typename: 'BtcLedgerAccountBalanceRange', close: { __typename?: 'BtcLedgerAccountBalance', btcSettled: { __typename?: 'BtcBalanceDetails', debit: Satoshis, credit: Satoshis, net: SignedSatoshis } } }
       | { __typename: 'UsdLedgerAccountBalanceRange', close: { __typename?: 'UsdLedgerAccountBalance', usdSettled: { __typename?: 'UsdBalanceDetails', debit: UsdCents, credit: UsdCents, net: SignedUsdCents } } }
@@ -3623,7 +3633,7 @@ export type LedgerAccountQueryVariables = Exact<{
 export type LedgerAccountQuery = { __typename?: 'Query', ledgerAccount?: { __typename?: 'LedgerAccount', id: string, ledgerAccountId: string, name: string, code?: any | null, entity?:
       | { __typename: 'Collateral', creditFacility: { __typename?: 'CreditFacility', publicId: any } }
       | { __typename: 'CreditFacility', publicId: any }
-      | { __typename: 'DepositAccount', depositAccountId: string, customer: { __typename?: 'Customer', publicId: any } }
+      | { __typename: 'DepositAccount', depositAccountId: string, publicId: any, customer: { __typename?: 'Customer', publicId: any } }
      | null, ancestors: Array<{ __typename?: 'LedgerAccount', id: string, ledgerAccountId: string, name: string, code?: any | null }>, children: Array<{ __typename?: 'LedgerAccount', id: string, ledgerAccountId: string, name: string, code?: any | null }>, balanceRange:
       | { __typename: 'BtcLedgerAccountBalanceRange', close: { __typename?: 'BtcLedgerAccountBalance', btcSettled: { __typename?: 'BtcBalanceDetails', debit: Satoshis, credit: Satoshis, net: SignedSatoshis } } }
       | { __typename: 'UsdLedgerAccountBalanceRange', close: { __typename?: 'UsdLedgerAccountBalance', usdSettled: { __typename?: 'UsdBalanceDetails', debit: UsdCents, credit: UsdCents, net: SignedUsdCents } } }
@@ -4102,6 +4112,22 @@ export type GetRealtimePriceUpdatesQueryVariables = Exact<{ [key: string]: never
 
 
 export type GetRealtimePriceUpdatesQuery = { __typename?: 'Query', realtimePrice: { __typename?: 'RealtimePrice', usdCentsPerBtc: UsdCents } };
+
+export type DepositAccountDetailsFragmentFragment = { __typename?: 'DepositAccount', id: string, depositAccountId: string, customerId: string, createdAt: any, status: DepositAccountStatus, publicId: any, balance: { __typename?: 'DepositAccountBalance', settled: UsdCents, pending: UsdCents }, ledgerAccounts: { __typename?: 'DepositAccountLedgerAccounts', depositAccountId: string, frozenDepositAccountId: string }, customer: { __typename?: 'Customer', id: string, customerId: string, publicId: any, email: string, telegramId: string } };
+
+export type GetDepositAccountByPublicIdQueryVariables = Exact<{
+  publicId: Scalars['PublicId']['input'];
+}>;
+
+
+export type GetDepositAccountByPublicIdQuery = { __typename?: 'Query', publicIdTarget?:
+    | { __typename: 'CreditFacility' }
+    | { __typename: 'CreditFacilityDisbursal' }
+    | { __typename: 'Customer' }
+    | { __typename: 'Deposit' }
+    | { __typename: 'DepositAccount', id: string, depositAccountId: string, customerId: string, createdAt: any, status: DepositAccountStatus, publicId: any, balance: { __typename?: 'DepositAccountBalance', settled: UsdCents, pending: UsdCents }, ledgerAccounts: { __typename?: 'DepositAccountLedgerAccounts', depositAccountId: string, frozenDepositAccountId: string }, customer: { __typename?: 'Customer', id: string, customerId: string, publicId: any, email: string, telegramId: string } }
+    | { __typename: 'Withdrawal' }
+   | null };
 
 export type LoanAgreementGenerateMutationVariables = Exact<{
   input: LoanAgreementGenerateInput;
@@ -4639,6 +4665,7 @@ export const LedgerAccountDetailsFragmentDoc = gql`
     __typename
     ... on DepositAccount {
       depositAccountId
+      publicId
       customer {
         publicId
       }
@@ -4965,6 +4992,31 @@ export const WithdrawalFieldsFragmentDoc = gql`
       customerId
       email
     }
+  }
+}
+    `;
+export const DepositAccountDetailsFragmentFragmentDoc = gql`
+    fragment DepositAccountDetailsFragment on DepositAccount {
+  id
+  depositAccountId
+  customerId
+  createdAt
+  status
+  publicId
+  balance {
+    settled
+    pending
+  }
+  ledgerAccounts {
+    depositAccountId
+    frozenDepositAccountId
+  }
+  customer {
+    id
+    customerId
+    publicId
+    email
+    telegramId
   }
 }
     `;
@@ -7262,6 +7314,73 @@ export type DashboardQueryHookResult = ReturnType<typeof useDashboardQuery>;
 export type DashboardLazyQueryHookResult = ReturnType<typeof useDashboardLazyQuery>;
 export type DashboardSuspenseQueryHookResult = ReturnType<typeof useDashboardSuspenseQuery>;
 export type DashboardQueryResult = Apollo.QueryResult<DashboardQuery, DashboardQueryVariables>;
+export const CustomersWithDepositAccountsDocument = gql`
+    query CustomersWithDepositAccounts($first: Int!, $after: String, $sort: CustomersSort, $filter: CustomersFilter) {
+  customers(first: $first, after: $after, sort: $sort, filter: $filter) {
+    edges {
+      node {
+        id
+        customerId
+        email
+        depositAccount {
+          __typename
+          id
+          depositAccountId
+          publicId
+          status
+          balance {
+            settled
+            pending
+          }
+        }
+      }
+      cursor
+    }
+    pageInfo {
+      endCursor
+      startCursor
+      hasNextPage
+      hasPreviousPage
+    }
+  }
+}
+    `;
+
+/**
+ * __useCustomersWithDepositAccountsQuery__
+ *
+ * To run a query within a React component, call `useCustomersWithDepositAccountsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCustomersWithDepositAccountsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCustomersWithDepositAccountsQuery({
+ *   variables: {
+ *      first: // value for 'first'
+ *      after: // value for 'after'
+ *      sort: // value for 'sort'
+ *      filter: // value for 'filter'
+ *   },
+ * });
+ */
+export function useCustomersWithDepositAccountsQuery(baseOptions: Apollo.QueryHookOptions<CustomersWithDepositAccountsQuery, CustomersWithDepositAccountsQueryVariables> & ({ variables: CustomersWithDepositAccountsQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<CustomersWithDepositAccountsQuery, CustomersWithDepositAccountsQueryVariables>(CustomersWithDepositAccountsDocument, options);
+      }
+export function useCustomersWithDepositAccountsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CustomersWithDepositAccountsQuery, CustomersWithDepositAccountsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<CustomersWithDepositAccountsQuery, CustomersWithDepositAccountsQueryVariables>(CustomersWithDepositAccountsDocument, options);
+        }
+export function useCustomersWithDepositAccountsSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<CustomersWithDepositAccountsQuery, CustomersWithDepositAccountsQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<CustomersWithDepositAccountsQuery, CustomersWithDepositAccountsQueryVariables>(CustomersWithDepositAccountsDocument, options);
+        }
+export type CustomersWithDepositAccountsQueryHookResult = ReturnType<typeof useCustomersWithDepositAccountsQuery>;
+export type CustomersWithDepositAccountsLazyQueryHookResult = ReturnType<typeof useCustomersWithDepositAccountsLazyQuery>;
+export type CustomersWithDepositAccountsSuspenseQueryHookResult = ReturnType<typeof useCustomersWithDepositAccountsSuspenseQuery>;
+export type CustomersWithDepositAccountsQueryResult = Apollo.QueryResult<CustomersWithDepositAccountsQuery, CustomersWithDepositAccountsQueryVariables>;
 export const GetDepositDetailsDocument = gql`
     query GetDepositDetails($publicId: PublicId!) {
   depositByPublicId(id: $publicId) {
@@ -10107,6 +10226,49 @@ export type GetRealtimePriceUpdatesQueryHookResult = ReturnType<typeof useGetRea
 export type GetRealtimePriceUpdatesLazyQueryHookResult = ReturnType<typeof useGetRealtimePriceUpdatesLazyQuery>;
 export type GetRealtimePriceUpdatesSuspenseQueryHookResult = ReturnType<typeof useGetRealtimePriceUpdatesSuspenseQuery>;
 export type GetRealtimePriceUpdatesQueryResult = Apollo.QueryResult<GetRealtimePriceUpdatesQuery, GetRealtimePriceUpdatesQueryVariables>;
+export const GetDepositAccountByPublicIdDocument = gql`
+    query GetDepositAccountByPublicId($publicId: PublicId!) {
+  publicIdTarget(id: $publicId) {
+    __typename
+    ... on DepositAccount {
+      ...DepositAccountDetailsFragment
+    }
+  }
+}
+    ${DepositAccountDetailsFragmentFragmentDoc}`;
+
+/**
+ * __useGetDepositAccountByPublicIdQuery__
+ *
+ * To run a query within a React component, call `useGetDepositAccountByPublicIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetDepositAccountByPublicIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetDepositAccountByPublicIdQuery({
+ *   variables: {
+ *      publicId: // value for 'publicId'
+ *   },
+ * });
+ */
+export function useGetDepositAccountByPublicIdQuery(baseOptions: Apollo.QueryHookOptions<GetDepositAccountByPublicIdQuery, GetDepositAccountByPublicIdQueryVariables> & ({ variables: GetDepositAccountByPublicIdQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetDepositAccountByPublicIdQuery, GetDepositAccountByPublicIdQueryVariables>(GetDepositAccountByPublicIdDocument, options);
+      }
+export function useGetDepositAccountByPublicIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetDepositAccountByPublicIdQuery, GetDepositAccountByPublicIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetDepositAccountByPublicIdQuery, GetDepositAccountByPublicIdQueryVariables>(GetDepositAccountByPublicIdDocument, options);
+        }
+export function useGetDepositAccountByPublicIdSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetDepositAccountByPublicIdQuery, GetDepositAccountByPublicIdQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetDepositAccountByPublicIdQuery, GetDepositAccountByPublicIdQueryVariables>(GetDepositAccountByPublicIdDocument, options);
+        }
+export type GetDepositAccountByPublicIdQueryHookResult = ReturnType<typeof useGetDepositAccountByPublicIdQuery>;
+export type GetDepositAccountByPublicIdLazyQueryHookResult = ReturnType<typeof useGetDepositAccountByPublicIdLazyQuery>;
+export type GetDepositAccountByPublicIdSuspenseQueryHookResult = ReturnType<typeof useGetDepositAccountByPublicIdSuspenseQuery>;
+export type GetDepositAccountByPublicIdQueryResult = Apollo.QueryResult<GetDepositAccountByPublicIdQuery, GetDepositAccountByPublicIdQueryVariables>;
 export const LoanAgreementGenerateDocument = gql`
     mutation LoanAgreementGenerate($input: LoanAgreementGenerateInput!) {
   loanAgreementGenerate(input: $input) {

@@ -140,6 +140,7 @@
   "Sidebar": {
     "labels": {
       "loans": "Loans",
+      "accounts": "Accounts",
       "transactions": "Transactions",
       "administration": "Administration",
       "financialReports": "Financial Reports",
@@ -158,6 +159,7 @@
       "policies": "Policies",
       "deposits": "Deposits",
       "withdrawals": "Withdrawals",
+      "depositAccounts": "Deposit Accounts",
       "auditLogs": "Audit Logs",
       "committees": "Committees",
       "chartOfAccounts": "Chart of Accounts",
@@ -390,7 +392,8 @@
           "pendingBalance": "Pending Withdrawals"
         },
         "buttons": {
-          "freeze": "Freeze Account"
+          "freeze": "Freeze Account",
+          "processing": "Processing..."
         },
         "success": "Deposit account frozen successfully",
         "errors": {
@@ -507,7 +510,8 @@
         "title": "Unfreeze Deposit Account",
         "description": "Are you sure you want to unfreeze this deposit account? This will allow new deposits and withdrawals.",
         "buttons": {
-          "unfreeze": "Unfreeze Account"
+          "unfreeze": "Unfreeze Account",
+          "processing": "Processing..."
         },
         "success": "Deposit account unfrozen successfully"
       }
@@ -1383,6 +1387,22 @@
       "success": "Custodian added successfully",
       "errors": {
         "failed": "Failed to create custodian"
+      }
+    }
+  },
+  "DepositAccounts": {
+    "title": "Deposit Accounts",
+    "description": "View and manage all deposit accounts",
+    "table": {
+      "headers": {
+        "depositAccountId": "Deposit Account ID",
+        "customer": "Customer",
+        "settledBalance": "Settled Balance",
+        "pendingBalance": "Pending Balance",
+        "status": "Status"
+      },
+      "errors": {
+        "general": "An error occurred while fetching deposit accounts."
       }
     }
   },

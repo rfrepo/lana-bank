@@ -8,35 +8,24 @@ import { Snowflake, ArrowRight, Sun } from "lucide-react"
 import { Badge } from "@lana/web/ui/badge"
 import { Button } from "@lana/web/ui/button"
 
-import FreezeDepositAccountDialog from "./freeze-deposit-account"
-import UnfreezeDepositAccountDialog from "./unfreeze-deposit-account"
+import FreezeDepositAccountDialog from "../freeze-deposit-account"
+import UnfreezeDepositAccountDialog from "../unfreeze-deposit-account"
 
 import Balance from "@/components/balance/balance"
 import { DetailsCard, DetailItemProps } from "@/components/details"
 import {
   DepositAccountStatus,
-  GetCustomerBasicDetailsQuery,
 } from "@/lib/graphql/generated"
+import type { DepositAccountData } from "@/hooks/deposit-account/use-deposit-account"
 
-type DepositAccountProps = {
-  balance: NonNullable<
-    NonNullable<GetCustomerBasicDetailsQuery["customerByPublicId"]>["depositAccount"]
-  >["balance"]
-  publicId: string
-  status: DepositAccountStatus
-  depositAccountId: string
-  ledgerAccounts: NonNullable<
-    NonNullable<GetCustomerBasicDetailsQuery["customerByPublicId"]>["depositAccount"]
-  >["ledgerAccounts"]
+type DepositAccountDetailsProps = {
+  depositAccount: DepositAccountData
 }
 
-export const DepositAccount: React.FC<DepositAccountProps> = ({
-  balance,
-  publicId,
-  status,
-  depositAccountId,
-  ledgerAccounts,
+const DepositAccountDetails: React.FC<DepositAccountDetailsProps> = ({
+  depositAccount,
 }) => {
+  const { balance, publicId, status, depositAccountId, ledgerAccounts } = depositAccount
   const t = useTranslations("Customers.CustomerDetails.depositAccount")
   const router = useRouter()
   const [openFreezeDialog, setOpenFreezeDialog] = useState(false)
@@ -142,3 +131,5 @@ export const DepositAccountStatusBadge: React.FC<{ status: DepositAccountStatus 
 
   return <Badge variant={getVariant(status)}>{t(status.toLowerCase())}</Badge>
 }
+
+export default DepositAccountDetails
