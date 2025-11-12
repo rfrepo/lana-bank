@@ -140,6 +140,7 @@
   "Sidebar": {
     "labels": {
       "loans": "Préstamos",
+      "accounts": "Cuentas",
       "transactions": "Transacciones",
       "administration": "Administración",
       "financialReports": "Reportes",
@@ -158,6 +159,7 @@
       "policies": "Políticas",
       "deposits": "Depósitos",
       "withdrawals": "Retiros",
+      "depositAccounts": "Cuentas de Depósito",
       "auditLogs": "Registros de Auditoría",
       "committees": "Comités",
       "chartOfAccounts": "Catálogo de Cuentas",
@@ -390,7 +392,8 @@
           "pendingBalance": "Retiros pendientes"
         },
         "buttons": {
-          "freeze": "Congelar Cuenta"
+          "freeze": "Congelar Cuenta",
+          "processing": "Procesando..."
         },
         "success": "Cuenta de depósito congelada exitosamente",
         "errors": {
@@ -507,7 +510,8 @@
         "title": "Descongelar Cuenta de Depósito",
         "description": "¿Está seguro de que desea descongelar esta cuenta de depósito? Esto permitirá nuevos depósitos y retiros.",
         "buttons": {
-          "unfreeze": "Descongelar Cuenta"
+          "unfreeze": "Descongelar Cuenta",
+          "processing": "Procesando..."
         },
         "success": "Cuenta de depósito descongelada exitosamente"
       }
@@ -1383,6 +1387,22 @@
       "success": "Custodio agregado exitosamente",
       "errors": {
         "failed": "Error al crear el custodio"
+      }
+    }
+  },
+  "DepositAccounts": {
+    "title": "Cuentas de Depósito",
+    "description": "Ver y gestionar todas las cuentas de depósito",
+    "table": {
+      "headers": {
+        "depositAccountId": "ID de Cuenta de Depósito",
+        "customer": "Cliente",
+        "settledBalance": "Saldo Liquidado",
+        "pendingBalance": "Saldo Pendiente",
+        "status": "Estado"
+      },
+      "errors": {
+        "general": "Ocurrió un error al obtener las cuentas de depósito."
       }
     }
   },
