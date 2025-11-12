@@ -128,7 +128,7 @@ export const KycStatus: React.FC<KycStatusProps> = ({ customerId }) => {
       title={t("title")}
       badge={<KycStatusBadge status={data?.customer?.kycVerification} />}
       details={details}
-      className="w-full md:w-1/4"
+      className="w-full"
       columns={1}
     />
   )

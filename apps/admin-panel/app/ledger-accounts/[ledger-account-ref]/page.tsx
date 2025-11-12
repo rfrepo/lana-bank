@@ -56,6 +56,7 @@ gql`
       __typename
       ... on DepositAccount {
         depositAccountId
+        publicId
         customer {
           publicId
         }
@@ -277,18 +278,18 @@ const LedgerAccountPage: React.FC<LedgerAccountPageProps> = ({ params }) => {
       </Button>
     ),
     ledgerAccount?.code &&
-      ledgerAccount.code.replace(/\./g, "").length < MAX_ACCOUNT_CODE_DIGITS && (
-        <Button
-          key="add-child"
-          variant="outline"
-          onClick={handleOpenAddChildDialog}
-          data-testid="add-child-node-button"
-          className="flex items-center gap-1"
-        >
-          <Plus className="h-4 w-4" />
-          {t("addChildNode")}
-        </Button>
-      ),
+    ledgerAccount.code.replace(/\./g, "").length < MAX_ACCOUNT_CODE_DIGITS && (
+      <Button
+        key="add-child"
+        variant="outline"
+        onClick={handleOpenAddChildDialog}
+        data-testid="add-child-node-button"
+        className="flex items-center gap-1"
+      >
+        <Plus className="h-4 w-4" />
+        {t("addChildNode")}
+      </Button>
+    ),
   ].filter(Boolean)
 
   const footerContent =
@@ -446,7 +447,7 @@ const getEntityforAccount = (
   switch (entity.__typename) {
     case "DepositAccount":
       return {
-        url: `/customers/${entity.customer.publicId}`,
+        url: `/deposit-accounts/${entity.publicId}`,
         label: t("viewDepositAccount"),
       }
     case "CreditFacility":
@@ -469,8 +470,8 @@ type CollapsibleAccountSectionProps = {
   isOpen: boolean
   onOpenChange: (open: boolean) => void
   data:
-    | LedgerAccountDetailsFragment["ancestors"]
-    | LedgerAccountDetailsFragment["children"]
+  | LedgerAccountDetailsFragment["ancestors"]
+  | LedgerAccountDetailsFragment["children"]
   onRowClick: (item: LedgerAccountDetailsFragment["ancestors"][0]) => void
   t: (key: string) => string
   loading: boolean
