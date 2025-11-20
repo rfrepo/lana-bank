@@ -1,0 +1,134 @@
+"use client"
+
+import React, { useState } from "react"
+import { useTranslations } from "next-intl"
+import { useRouter } from "next/navigation"
+import { Snowflake, ArrowRight, Sun } from "lucide-react"
+
+import { Badge } from "@lana/web/ui/badge"
+import { Button } from "@lana/web/ui/button"
+
+import FreezeDepositAccountDialog from "../freeze-account/freeze-deposit-account"
+import UnfreezeDepositAccountDialog from "../unfreeze-account/unfreeze-deposit-account"
+
+import Balance from "@/components/balance/balance"
+import { DetailsCard, DetailItemProps } from "@/components/details"
+import {
+  DepositAccountStatus,
+} from "@/lib/graphql/generated"
+import type { DepositAccountData } from "@/hooks/deposit-account/use-deposit-account"
+
+type DepositAccountDetailsProps = {
+  depositAccount: DepositAccountData
+}
+
+const DepositAccountDetails: React.FC<DepositAccountDetailsProps> = ({
+  depositAccount,
+}) => {
+  const { balance, status, depositAccountId, ledgerAccounts } = depositAccount
+  const t = useTranslations("DepositAccounts.DepositAccountDetails")
+  const router = useRouter()
+  const [openFreezeDialog, setOpenFreezeDialog] = useState(false)
+  const [openUnfreezeDialog, setOpenUnfreezeDialog] = useState(false)
+
+  const handleViewLedgerAccount = () => {
+    const accountId =
+      status === DepositAccountStatus.Frozen
+        ? ledgerAccounts?.frozenDepositAccountId
+        : ledgerAccounts?.depositAccountId
+
+    if (accountId) {
+      router.push(`/ledger-accounts/${accountId}`)
+    }
+  }
+
+  const handleFreezeAccount = () => {
+    setOpenFreezeDialog(true)
+  }
+
+  const handleUnfreezeAccount = () => {
+    setOpenUnfreezeDialog(true)
+  }
+
+  const details: DetailItemProps[] = [
+    {
+      label: t("labels.checkingSettled"),
+      value: <Balance amount={balance.settled} currency="usd" />,
+    },
+    {
+      label: t("labels.pendingWithdrawals"),
+      value: <Balance amount={balance.pending} currency="usd" />,
+    },
+    {
+      label: t("labels.status"),
+      value: <DepositAccountStatusBadge status={status} />,
+    },
+  ]
+
+  return (
+    <>
+      <DetailsCard
+        title={t("title")}
+        details={details}
+        columns={3}
+        className="w-full"
+        footerContent={
+          <>
+            <Button variant="outline" onClick={handleViewLedgerAccount}>
+              {t("buttons.viewLedgerAccount")}
+              <ArrowRight />
+            </Button>
+            {status === DepositAccountStatus.Frozen && (
+              <Button variant="outline" onClick={handleUnfreezeAccount}>
+                <Sun />
+                {t("buttons.unfreezeDepositAccount")}
+              </Button>
+            )}
+            {status === DepositAccountStatus.Active && (
+              <Button variant="outline" onClick={handleFreezeAccount}>
+                <Snowflake />
+                {t("buttons.freezeDepositAccount")}
+              </Button>
+            )}
+          </>
+        }
+      />
+      <FreezeDepositAccountDialog
+        depositAccountId={depositAccountId}
+        balance={balance}
+        openFreezeDialog={openFreezeDialog}
+        setOpenFreezeDialog={setOpenFreezeDialog}
+      />
+      <UnfreezeDepositAccountDialog
+        depositAccountId={depositAccountId}
+        openUnfreezeDialog={openUnfreezeDialog}
+        setOpenUnfreezeDialog={setOpenUnfreezeDialog}
+      />
+    </>
+  )
+}
+
+export const DepositAccountStatusBadge: React.FC<{ status: DepositAccountStatus }> = ({
+  status,
+}) => {
+  const t = useTranslations("DepositAccounts.DepositAccountDetails.status")
+
+  const getVariant = (status: DepositAccountStatus) => {
+    switch (status) {
+      case DepositAccountStatus.Active:
+        return "success"
+      case DepositAccountStatus.Frozen:
+        return "destructive"
+      case DepositAccountStatus.Inactive:
+        return "secondary"
+      default: {
+        const exhaustiveCheck: never = status
+        return exhaustiveCheck
+      }
+    }
+  }
+
+  return <Badge variant={getVariant(status)} data-testid="badge">{t(status.toLowerCase())}</Badge>
+}
+
+export default DepositAccountDetails

@@ -1,9 +1,15 @@
 "use client"
+import DepositAccountContextActionMenu from "../components/context-menu-actions/deposit-account-context-menu/deposite-account-context-menu"
+
+import NoDepositAccount from "./components/account-not-found/no-deposit-account"
+import DepositAccountDetails from "./components/account-overview/deposit-account-details"
+import DepositAccountPageLoadError from "./components/page-load-error/deposit-account-page-load-error"
+import CustomerCard from "./components/associated-customer-card/customer-card"
+import { DepositAccountTransactions } from "./components/transaction-history/deposit-account-transactions"
+
+import { useDepositAccountPage } from "./hooks/deposit-account-page/use-deposit-account-page"
+
 import { DetailsPageSkeleton } from "@/components/details-page-skeleton"
-import NoDepositAccount from "./components/no-deposit-account/no-deposit-account"
-import DepositAccountDetails from "./components/deposit-account-details/deposit-account-details"
-import DepositAccountPageLoadError from "./components/deposit-account-page-load-error/deposit-account-page-load-error"
-import { useDepositAccountPage } from "@/app/deposit-accounts/[deposit-account-id]/hooks/deposit-account-page/use-deposit-account-page"
 
 function DepositAccountPage({
   params,
@@ -27,8 +33,13 @@ function DepositAccountPage({
   }
 
   return (
-    <main className="max-w-7xl m-auto space-y-2">
-      <DepositAccountDetails depositAccount={depositAccount} />
+    <main className="max-w-7xl m-auto space-y-6">
+      <div className="flex flex-col md:flex-row gap-8">
+        <DepositAccountDetails depositAccount={depositAccount} />
+        <CustomerCard customer={depositAccount.customer} />
+      </div>
+      <DepositAccountTransactions depositAccountId={depositAccount.publicId} />
+      <DepositAccountContextActionMenu />
     </main>
   )
 }
