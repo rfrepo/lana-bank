@@ -1,6 +1,8 @@
 import { jest } from "@jest/globals"
-import type useDepositAccountsTable from '@/app/deposit-accounts/hooks/deposit-accounts-table/use-deposit-account-table'
-import { ApolloError } from '@apollo/client'
+
+import type useDepositAccountsTable from '@/app/deposit-accounts/components/deposit-accounts-table/hooks/deposit-accounts-table/use-deposit-account-table'
+
+import { createMockError } from '@/app/deposit-accounts/shared/test-utils/helpers'
 
 type UseDepositAccountsTableReturn = ReturnType<typeof useDepositAccountsTable>
 type UseDepositAccountsTableOverrides = Partial<UseDepositAccountsTableReturn>
@@ -18,7 +20,6 @@ export const createMockUseDepositAccountsTableReturn = (
   ...overrides,
 })
 
-export const createMockError = (message: string): ApolloError =>
-  new ApolloError({ errorMessage: message })
+export { createMockError }
 
 

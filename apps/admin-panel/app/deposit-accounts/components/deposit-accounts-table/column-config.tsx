@@ -1,9 +1,10 @@
-import { UsdCents } from "@/types/scalars";
 import { useTranslations } from "next-intl";
+
+import { UsdCents } from "@/types/scalars";
 import Balance from "@/components/balance/balance";
 import { Column } from "@/components/paginated-table";
 import { DepositAccountItem } from "@/app/deposit-accounts/types";
-import { DepositAccountStatusBadge } from "@/app/deposit-accounts/[deposit-account-id]/components/deposit-account-details/deposit-account-details";
+import { DepositAccountStatusBadge } from "@/app/deposit-accounts/[deposit-account-id]/components/account-overview/deposit-account-details";
 
 export const getColumnsConfig = (t: ReturnType<typeof useTranslations>): Column<DepositAccountItem>[] => [
     {
@@ -22,7 +23,7 @@ export const getColumnsConfig = (t: ReturnType<typeof useTranslations>): Column<
         key: "status",
         label: t("headers.status"),
         sortable: true,
-        render: (status: DepositAccountItem["status"], _record: DepositAccountItem) => (
+        render: (status: DepositAccountItem["status"]) => (
             status ? <DepositAccountStatusBadge status={status} /> : null
         ),
     },
@@ -30,7 +31,7 @@ export const getColumnsConfig = (t: ReturnType<typeof useTranslations>): Column<
         key: "balance",
         label: t("headers.pendingBalance"),
         sortable: true,
-        render: (balance: DepositAccountItem["balance"], _record: DepositAccountItem) => (
+        render: (balance: DepositAccountItem["balance"]) => (
             <Balance
                 amount={balance.pending as unknown as UsdCents}
                 currency="usd"
@@ -41,7 +42,7 @@ export const getColumnsConfig = (t: ReturnType<typeof useTranslations>): Column<
         key: "balance",
         label: t("headers.settledBalance"),
         sortable: true,
-        render: (balance: DepositAccountItem["balance"], _record: DepositAccountItem) => (
+        render: (balance: DepositAccountItem["balance"]) => (
             <Balance
                 amount={balance.settled as unknown as UsdCents}
                 currency="usd"

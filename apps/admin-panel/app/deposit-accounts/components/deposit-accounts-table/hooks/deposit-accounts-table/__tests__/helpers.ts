@@ -1,15 +1,13 @@
 import { jest } from "@jest/globals"
 import { renderHook } from "@testing-library/react"
+
+import { useTranslations } from "next-intl"
+
 import { DepositAccountItem } from "@/app/deposit-accounts/types"
 import { DepositAccountStatus } from "@/lib/graphql/generated"
 import { PaginatedData } from "@/components/paginated-table"
 import { getColumnsConfig } from "@/app/deposit-accounts/components/deposit-accounts-table/column-config"
 import useDepositAccounts from "@/app/deposit-accounts/hooks/deposit-accounts/use-deposit-accounts"
-import { useTranslations } from "next-intl"
-
-jest.mock("next-intl", () => ({
-    useTranslations: jest.fn(),
-}))
 
 export const BASE_MOCK_TRANSLATION = jest.fn((key: string) => `translated.${key}`)
 
@@ -102,7 +100,6 @@ export const setupHook = (
         fetchMore,
     } as any)
 
-    // Dynamically import the SUT to ensure mocks are applied
     return import("../use-deposit-account-table").then((module) => {
         const useDepositAccountsTable = module.default
         return renderHook(() => useDepositAccountsTable())
@@ -138,9 +135,8 @@ export const setupHookSync = async (
         fetchMore,
     } as any)
 
-    // Dynamically import the SUT to ensure mocks are applied
-    const module = await import("../use-deposit-account-table")
-    const useDepositAccountsTable = module.default
+    const mockedModule = await import("../use-deposit-account-table")
+    const useDepositAccountsTable = mockedModule.default
     return renderHook(() => useDepositAccountsTable())
 }
 

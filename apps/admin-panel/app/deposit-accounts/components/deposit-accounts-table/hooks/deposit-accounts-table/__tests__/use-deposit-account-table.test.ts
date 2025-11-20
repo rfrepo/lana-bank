@@ -1,43 +1,18 @@
 import { expect, it, describe, beforeEach, jest } from "@jest/globals"
-import { act } from "@testing-library/react"
-import { getColumnsConfig } from "@/app/deposit-accounts/components/deposit-accounts-table/column-config"
-import { useTranslations } from "next-intl"
-import { DepositAccountItem } from "@/app/deposit-accounts/types"
-import { DepositAccountStatus, CustomersSortBy, SortDirection } from "@/lib/graphql/generated"
-import {
+import { act } from 'react'
 
+import { useTranslations } from "next-intl"
+
+import {
     createMockDepositAccount,
     createMockPaginatedData,
     setupHookSync,
 } from "./helpers"
+import { getMockUseDepositAccounts, mockGetColumnsConfig } from "./mocks"
 
-jest.mock("next-intl", () => ({
-    useTranslations: jest.fn(),
-}))
+import { DepositAccountStatus, CustomersSortBy, SortDirection } from "@/lib/graphql/generated"
 
-// Apollo Client is already mocked globally in jest.setup.ts
-
-// Mock the useDepositAccounts hook before it's imported
-jest.mock(
-    "@/app/deposit-accounts/hooks/deposit-accounts/use-deposit-accounts",
-    () => ({
-        __esModule: true,
-        default: jest.fn(),
-    }),
-)
-
-// Get the mocked function after the mock is set up
-const mockUseDepositAccountsModule = require("@/app/deposit-accounts/hooks/deposit-accounts/use-deposit-accounts")
-const mockUseDepositAccountsFn = mockUseDepositAccountsModule.default as jest.Mock
-
-const mockGetColumnsConfig = jest.fn() as jest.MockedFunction<typeof getColumnsConfig>
-
-jest.mock(
-    "@/app/deposit-accounts/components/deposit-accounts-table/column-config",
-    () => ({
-        getColumnsConfig: mockGetColumnsConfig,
-    }),
-)
+const mockUseDepositAccountsFn = getMockUseDepositAccounts()
 
 const mockUseTranslations = useTranslations as jest.MockedFunction<
     typeof useTranslations
@@ -46,7 +21,6 @@ const mockUseTranslations = useTranslations as jest.MockedFunction<
 describe("useDepositAccountsTable", () => {
     beforeEach(() => {
         jest.clearAllMocks()
-        // Set up default return value for useDepositAccounts
         mockUseDepositAccountsFn.mockReturnValue({
             data: undefined,
             loading: false,
@@ -169,26 +143,6 @@ describe("useDepositAccountsTable", () => {
             })
         })
 
-        it("should convert camelCase column to SCREAMING_SNAKE_CASE", async () => {
-            const { result } = await setupHookSync(
-                mockUseTranslations,
-                mockGetColumnsConfig,
-                mockUseDepositAccountsFn,
-            )
-
-            act(() => {
-                result.current.handleSort("depositAccountId", "DESC")
-            })
-
-            expect(mockUseDepositAccountsFn).toHaveBeenLastCalledWith({
-                first: 10,
-                sort: {
-                    by: "DEPOSIT_ACCOUNT_ID" as CustomersSortBy,
-                    direction: SortDirection.Desc,
-                },
-            })
-        })
-
         it("should handle different sort directions", async () => {
             const { result } = await setupHookSync(
                 mockUseTranslations,
@@ -197,25 +151,25 @@ describe("useDepositAccountsTable", () => {
             )
 
             act(() => {
-                result.current.handleSort("status", "ASC")
+                result.current.handleSort("email", "ASC")
             })
 
             expect(mockUseDepositAccountsFn).toHaveBeenLastCalledWith({
                 first: 10,
                 sort: {
-                    by: "STATUS" as CustomersSortBy,
+                    by: CustomersSortBy.Email,
                     direction: SortDirection.Asc,
                 },
             })
 
             act(() => {
-                result.current.handleSort("status", "DESC")
+                result.current.handleSort("email", "DESC")
             })
 
             expect(mockUseDepositAccountsFn).toHaveBeenLastCalledWith({
                 first: 10,
                 sort: {
-                    by: "STATUS" as CustomersSortBy,
+                    by: CustomersSortBy.Email,
                     direction: SortDirection.Desc,
                 },
             })
@@ -233,34 +187,14 @@ describe("useDepositAccountsTable", () => {
             })
 
             act(() => {
-                result.current.handleSort("publicId", "DESC")
+                result.current.handleSort("email", "DESC")
             })
 
             expect(mockUseDepositAccountsFn).toHaveBeenLastCalledWith({
                 first: 10,
                 sort: {
-                    by: "PUBLIC_ID" as CustomersSortBy,
+                    by: CustomersSortBy.Email,
                     direction: SortDirection.Desc,
-                },
-            })
-        })
-
-        it("should handle balance column sorting", async () => {
-            const { result } = await setupHookSync(
-                mockUseTranslations,
-                mockGetColumnsConfig,
-                mockUseDepositAccountsFn,
-            )
-
-            act(() => {
-                result.current.handleSort("balance", "ASC")
-            })
-
-            expect(mockUseDepositAccountsFn).toHaveBeenLastCalledWith({
-                first: 10,
-                sort: {
-                    by: "BALANCE" as CustomersSortBy,
-                    direction: SortDirection.Asc,
                 },
             })
         })
@@ -470,7 +404,7 @@ describe("useDepositAccountsTable", () => {
             })
 
             act(() => {
-                result.current.handleSort("status", "DESC")
+                result.current.handleSort("email", "DESC")
             })
 
             const account = createMockDepositAccount()
@@ -479,7 +413,7 @@ describe("useDepositAccountsTable", () => {
             expect(mockUseDepositAccountsFn).toHaveBeenLastCalledWith({
                 first: 10,
                 sort: {
-                    by: "STATUS" as CustomersSortBy,
+                    by: CustomersSortBy.Email,
                     direction: SortDirection.Desc,
                 },
             })

@@ -1,8 +1,7 @@
-import PaginatedTable, {
-  DEFAULT_PAGESIZE,
-} from "@/components/paginated-table"
 import { useTranslations } from "next-intl"
 import { useCallback, useMemo, useState } from "react"
+
+import { DEFAULT_PAGESIZE } from "@/components/paginated-table"
 import { DepositAccountItem } from "@/app/deposit-accounts/types"
 import useDepositAccounts from "@/app/deposit-accounts/hooks/deposit-accounts/use-deposit-accounts"
 import { getColumnsConfig } from "@/app/deposit-accounts/components/deposit-accounts-table/column-config"

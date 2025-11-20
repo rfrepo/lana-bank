@@ -1,88 +1,50 @@
 import React from 'react'
-import { expect, it, describe, beforeEach, jest } from "@jest/globals"
+import { expect, it, describe } from "@jest/globals"
 import { render, waitFor } from '@testing-library/react'
-// Dynamically import the component to ensure mocks are applied
-import useDepositAccountsTable from '@/app/deposit-accounts/hooks/deposit-accounts-table/use-deposit-account-table'
+
 import {
     createMockUseDepositAccountsTableReturn,
     createMockError,
 } from './helpers'
+import { getMockUseDepositAccountsTable } from './mocks'
 
-jest.mock('@apollo/client', () => ({
-    gql: jest.fn(),
-}))
-
-jest.mock('@/lib/graphql/generated', () => ({
-    useCustomersWithDepositAccountsQuery: jest.fn(() => ({
-        data: null,
-        loading: false,
-        error: null,
-        fetchMore: jest.fn(),
-    })),
-}))
-
-jest.mock('@/components/paginated-table', () => ({
-    __esModule: true,
-    default: jest.fn().mockReturnValue(<div data-testid="paginated-table" />),
-}))
-
-jest.mock('@/components/inline-error-text', () => ({
-    __esModule: true,
-    default: jest.fn().mockReturnValue(<div data-testid="inline-error-text" />),
-}))
-
-jest.mock('@/app/deposit-accounts/hooks/deposit-accounts-table/use-deposit-account-table', () => ({
-    __esModule: true,
-    default: jest.fn(),
-}))
-
-const mockUseDepositAccountsTable = require('@/app/deposit-accounts/hooks/deposit-accounts-table/use-deposit-account-table').default as jest.Mock
+const mockUseDepositAccountsTable = getMockUseDepositAccountsTable()
 
 describe('DepositAccountsTable', () => {
-    beforeEach(() => {
+    const renderTableAndAssertElements = async () => {
+        const DepositAccountsTableComponent = (await import('../deposit-accounts-table')).default
+        const { getByRole, getByText } = render(<DepositAccountsTableComponent />)
+
+        await waitFor(() => {
+            expect(getByRole('table')).toBeDefined()
+        })
+
+        return { getByText }
+    }
+
+    it('should render paginated table', async () => {
         mockUseDepositAccountsTable.mockReturnValue(
             createMockUseDepositAccountsTableReturn()
         )
-    })
 
-    it('should render inline error text and paginated table', async () => {
-        const DepositAccountsTableComponent = (await import('../deposit-accounts-table')).default
-        const { getByTestId } = render(<DepositAccountsTableComponent />)
-
-        await waitFor(() => {
-            expect(getByTestId('inline-error-text')).toBeDefined()
-            expect(getByTestId('paginated-table')).toBeDefined()
-        })
+        await renderTableAndAssertElements()
     })
 
     it('should render with error message', async () => {
+        const error = createMockError('Test error')
         mockUseDepositAccountsTable.mockReturnValue(
-            createMockUseDepositAccountsTableReturn({
-                error: createMockError('Test error'),
-            })
+            createMockUseDepositAccountsTableReturn({ error })
         )
 
-        const DepositAccountsTableComponent = (await import('../deposit-accounts-table')).default
-        const { getByTestId } = render(<DepositAccountsTableComponent />)
-
-        await waitFor(() => {
-            expect(getByTestId('inline-error-text')).toBeDefined()
-            expect(getByTestId('paginated-table')).toBeDefined()
-        })
+        const { getByText } = await renderTableAndAssertElements()
+        expect(getByText(error.message)).toBeDefined()
     })
 
     it('should render with loading state', async () => {
         mockUseDepositAccountsTable.mockReturnValue(
-            createMockUseDepositAccountsTableReturn({
-                loading: true,
-            })
+            createMockUseDepositAccountsTableReturn({ loading: true })
         )
 
-        const DepositAccountsTableComponent = (await import('../deposit-accounts-table')).default
-        const { getByTestId } = render(<DepositAccountsTableComponent />)
-
-        await waitFor(() => {
-            expect(getByTestId('paginated-table')).toBeDefined()
-        })
+        await renderTableAndAssertElements()
     })
 })
