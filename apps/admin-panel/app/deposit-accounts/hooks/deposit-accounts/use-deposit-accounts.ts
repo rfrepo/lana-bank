@@ -1,9 +1,7 @@
 import { gql } from "@apollo/client"
 
-import {
-  useCustomersWithDepositAccountsQuery
-} from "@/lib/graphql/generated"
-import { PaginatedData } from "@/components/paginated-table"
+import { useMemo } from "react"
+
 import {
   DepositAccountNode,
   CustomerWithDepositAccountNode,
@@ -12,7 +10,11 @@ import {
   CustomerEdge,
   DepositAccountsVariables,
 } from "../../types"
-import { useMemo } from "react"
+
+import {
+  useCustomersWithDepositAccountsQuery
+} from "@/lib/graphql/generated"
+import { PaginatedData } from "@/components/paginated-table"
 
 gql`
   query CustomersWithDepositAccounts(

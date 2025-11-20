@@ -1,22 +1,18 @@
-import { expect, it, describe, beforeEach } from "@jest/globals"
+import { getMockUseGetDepositAccountByPublicIdQuery } from './mocks'
+import { expect, it, describe, beforeEach, jest } from "@jest/globals"
 import { renderHook } from "@testing-library/react"
-import { useDepositAccount } from "../use-deposit-account"
+
+import { mockDepositAccount } from "../__fixtures__/mock-deposit-account"
+
 import {
   Customer,
   DepositAccount,
   useGetDepositAccountByPublicIdQuery,
 } from "@/lib/graphql/generated"
-import { mockDepositAccount } from "../__fixtures__/mock-deposit-account"
 
-jest.mock("@/lib/graphql/generated", () => ({
-  ...jest.requireActual("@/lib/graphql/generated"),
-  useGetDepositAccountByPublicIdQuery: jest.fn(),
-}))
+// eslint-disable-next-line import/order
+import { useDepositAccount } from "../use-deposit-account"
 
-const mockUseGetDepositAccountByPublicIdQuery =
-  useGetDepositAccountByPublicIdQuery as jest.MockedFunction<
-    typeof useGetDepositAccountByPublicIdQuery
-  >
 
 const createMockReturnValue = (
   overrides?: Partial<
@@ -30,7 +26,12 @@ const createMockReturnValue = (
 })
 
 describe("useDepositAccount", () => {
-  beforeEach(() => void jest.clearAllMocks())
+  let mockUseGetDepositAccountByPublicIdQuery: ReturnType<typeof getMockUseGetDepositAccountByPublicIdQuery>
+
+  beforeEach(() => {
+    jest.clearAllMocks()
+    mockUseGetDepositAccountByPublicIdQuery = getMockUseGetDepositAccountByPublicIdQuery()
+  })
 
   it("should call useGetDepositAccountByPublicIdQuery with correct parameters", () => {
     const publicId = "12345"

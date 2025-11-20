@@ -72,6 +72,7 @@ interface PaginatedTableProps<T> {
   style?: "compact" | "comfortable"
   noDataText?: string
   subRows?: (record: T) => T[]
+  testId?: string
 }
 
 const PaginatedTable = <T,>({
@@ -89,6 +90,7 @@ const PaginatedTable = <T,>({
   style = "comfortable",
   noDataText,
   subRows,
+  testId,
 }: PaginatedTableProps<T>): React.ReactElement => {
   const isMobile = useBreakpointDown("md")
   const t = useTranslations("PaginatedTable")
@@ -465,6 +467,7 @@ const PaginatedTable = <T,>({
         className={`overflow-x-auto rounded-md focus:outline-none ${style === "comfortable" ? "border" : ""}`}
         tabIndex={0}
         role="grid"
+        data-testid={testId}
         onFocus={() => setIsTableFocused(true)}
         onBlur={(e) => {
           if (!tableRef.current?.contains(e.relatedTarget as Node)) {

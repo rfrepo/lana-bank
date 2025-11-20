@@ -1,7 +1,9 @@
 import { useState, useCallback } from "react"
 import { useRouter } from "next/navigation"
-import { DepositAccountStatus } from "@/lib/graphql/generated"
+
 import { DepositAccountData } from "../deposit-account/use-deposit-account"
+
+import { DepositAccountStatus } from "@/lib/graphql/generated"
 
 export interface UseDepositAccountActionsProps {
   status: DepositAccountStatus

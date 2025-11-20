@@ -25,7 +25,6 @@ import {
   Building2,
   FileSignature,
   Clock,
-  Wallet,
   WalletCards,
 } from "lucide-react"
 import { useTranslations } from "next-intl"

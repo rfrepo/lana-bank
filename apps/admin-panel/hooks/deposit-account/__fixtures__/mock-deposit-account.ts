@@ -1,8 +1,12 @@
 import {
+  Activity,
   Customer,
   DepositAccount,
   DepositAccountStatus,
+  KycVerification,
   LedgerAccount,
+  LedgerAccountBalanceRange,
+  DebitOrCredit,
 } from "@/lib/graphql/generated"
 import { UsdCents } from "@/types/scalars"
 
@@ -26,41 +30,33 @@ const createMockLedgerAccount = (overrides: Partial<LedgerAccount> = {}): Ledger
       endCursor: null,
     },
   },
-  balanceRange: {
-    __typename: "UsdLedgerAccountBalanceRange" as const,
-    min: 0 as UsdCents,
-    max: null,
-    close: null,
-    open: null,
-    periodActivity: null,
-  },
+  balanceRange: {} as LedgerAccountBalanceRange,
   isRootAccount: false,
-  normalBalanceType: "DEBIT" as const,
+  normalBalanceType: DebitOrCredit.Debit,
   code: null,
   entity: null,
   closestAccountWithCode: null,
   ...overrides,
 })
 
-const createMockCustomer = (overrides: Partial<Customer> = {}): Customer => ({
-  __typename: "Customer" as const,
-  id: overrides.id || "customer-1",
-  customerId: overrides.customerId || "uuid-customer-1",
-  publicId: overrides.publicId || "67890",
-  email: overrides.email || "test@example.com",
-  telegramId: overrides.telegramId || "telegram-123",
-  activity: "ACTIVE" as const,
-  createdAt: "2024-01-01T00:00:00Z",
-  creditFacilities: [],
-  creditFacilityProposals: [],
-  depositAccounts: [],
-  documents: [],
-  kycStatus: "APPROVED" as const,
-  name: null,
-  phoneNumber: null,
-  userCanCreateCreditFacility: false,
-  ...overrides,
-})
+const createMockCustomer = (overrides: Partial<Customer> = {}): Customer =>
+  ({
+    __typename: "Customer" as const,
+    id: overrides.id || "customer-1",
+    customerId: overrides.customerId || "uuid-customer-1",
+    publicId: overrides.publicId || "67890",
+    email: overrides.email || "test@example.com",
+    telegramId: overrides.telegramId || "telegram-123",
+    activity: Activity.Active,
+    createdAt: "2024-01-01T00:00:00Z",
+    creditFacilities: [],
+    creditFacilityProposals: [],
+    depositAccount: undefined,
+    documents: [],
+    kycVerification: KycVerification.Verified,
+    userCanCreateCreditFacility: false,
+    ...overrides,
+  } as Customer)
 
 export const mockDepositAccount = (): DepositAccount => ({
   __typename: "DepositAccount" as const,

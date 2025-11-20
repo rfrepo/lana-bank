@@ -1,41 +1,45 @@
 import { expect, it, describe, beforeEach } from "@jest/globals"
-import { renderHook } from "@testing-library/react"
-import {
-    useCustomersWithDepositAccountsQuery,
-    DepositAccountStatus,
-    CustomersWithDepositAccountsQuery,
-} from "@/lib/graphql/generated"
-import useDepositAccounts from "../use-deposit-accounts"
-import { DepositAccountItem, DepositAccountsVariables } from "@/app/deposit-accounts/types"
+import { renderHook, RenderHookResult } from "@testing-library/react"
+
 import {
     createMockReturnValue,
     createMockCustomerNode,
     createMockCustomerWithDepositAccount,
-    createMockCustomerEdge,
     createMockBalance,
     createMockDepositAccount,
     createMockPageInfo,
     createMockCustomersQuery,
-    createQueryResponseWithEdges,
     createSingleCustomerEdgeResponse,
     createMultipleCustomerEdgesResponse,
     createExpectedPaginatedData,
     BASE_PAGE_INFO,
-    BASE_BALANCE,
+    setupHook,
 } from "./helpers"
+import { getMockUseCustomersWithDepositAccountsQuery } from './mocks'
+
+import {
+    DepositAccountStatus,
+    CustomersWithDepositAccountsQuery,
+} from "@/lib/graphql/generated"
+import { DepositAccountItem, DepositAccountsVariables } from "@/app/deposit-accounts/types"
+
 import { UsdCents } from "@/types/scalars"
 
-jest.mock("@/lib/graphql/generated", () => ({
-    ...jest.requireActual("@/lib/graphql/generated"),
-    useCustomersWithDepositAccountsQuery: jest.fn(),
-}))
+// eslint-disable-next-line import/no-unassigned-import
+import './mocks'
 
-const mockUseCustomersWithDepositAccountsQuery =
-    useCustomersWithDepositAccountsQuery as jest.MockedFunction<
-        typeof useCustomersWithDepositAccountsQuery
-    >
+import useDepositAccounts from "../use-deposit-accounts"
+
+type UseDepositAccountsReturn = ReturnType<typeof useDepositAccounts>
+
+const setupHook = (
+    variables: DepositAccountsVariables,
+): RenderHookResult<UseDepositAccountsReturn, unknown> => {
+    return renderHook(() => useDepositAccounts(variables))
+}
 
 const mockQueryDataAndAssertDataIsUndefined = (
+    mockUseCustomersWithDepositAccountsQuery: ReturnType<typeof getMockUseCustomersWithDepositAccountsQuery>,
     mockDataFactory?: () => CustomersWithDepositAccountsQuery | undefined,
 ) => {
     const mockData = mockDataFactory?.()
@@ -43,14 +47,20 @@ const mockQueryDataAndAssertDataIsUndefined = (
         createMockReturnValue({ data: mockData }),
     )
 
-    const { result } = renderHook(() => useDepositAccounts({ first: 10 }))
+    const { result } = setupHook({ first: 10 })
 
     expect(result.current.data).toBeUndefined()
 }
 
 describe("useDepositAccounts", () => {
+    let mockUseCustomersWithDepositAccountsQuery: ReturnType<typeof getMockUseCustomersWithDepositAccountsQuery>
+
     beforeEach(() => {
-        jest.clearAllMocks()
+        mockUseCustomersWithDepositAccountsQuery = getMockUseCustomersWithDepositAccountsQuery()
+        mockUseCustomersWithDepositAccountsQuery.mockReset()
+        mockUseCustomersWithDepositAccountsQuery.mockReturnValue(
+            createMockReturnValue(),
+        )
     })
 
     describe("query hook invocation", () => {
@@ -66,7 +76,7 @@ describe("useDepositAccounts", () => {
                 createMockReturnValue(),
             )
 
-            renderHook(() => useDepositAccounts(variables))
+            setupHook(variables)
 
             expect(mockUseCustomersWithDepositAccountsQuery).toHaveBeenCalledWith(
                 {
@@ -78,20 +88,26 @@ describe("useDepositAccounts", () => {
 
     describe("paginated data transformation", () => {
         it("should return undefined when data is undefined", () => {
-            mockQueryDataAndAssertDataIsUndefined(() => undefined)
+            mockQueryDataAndAssertDataIsUndefined(
+                mockUseCustomersWithDepositAccountsQuery,
+                () => undefined,
+            )
         })
 
         it("should return undefined when edges array is empty", () => {
-            mockQueryDataAndAssertDataIsUndefined(() =>
-                createMockCustomersQuery(),
+            mockQueryDataAndAssertDataIsUndefined(
+                mockUseCustomersWithDepositAccountsQuery,
+                () => createMockCustomersQuery(),
             )
         })
 
         it("should return undefined when edges array is null", () => {
-            mockQueryDataAndAssertDataIsUndefined(() =>
-                createMockCustomersQuery({
-                    customers: { edges: null as any },
-                }),
+            mockQueryDataAndAssertDataIsUndefined(
+                mockUseCustomersWithDepositAccountsQuery,
+                () =>
+                    createMockCustomersQuery({
+                        customers: { edges: null as any },
+                    }),
             )
         })
 
@@ -115,9 +131,7 @@ describe("useDepositAccounts", () => {
                 createMockReturnValue({ data: mockData }),
             )
 
-            const { result } = renderHook(() =>
-                useDepositAccounts({ first: 10 }),
-            )
+            const { result } = setupHook({ first: 10 })
 
             const expectedData = createExpectedPaginatedData(
                 [customer1, customer2],
@@ -154,9 +168,7 @@ describe("useDepositAccounts", () => {
                 createMockReturnValue({ data: mockData }),
             )
 
-            const { result } = renderHook(() =>
-                useDepositAccounts({ first: 10 }),
-            )
+            const { result } = setupHook({ first: 10 })
 
             expect(result.current.data?.edges).toHaveLength(1)
             expect(result.current.data?.edges[0].node.email).toBe(
@@ -176,9 +188,7 @@ describe("useDepositAccounts", () => {
                 createMockReturnValue({ data: mockData }),
             )
 
-            const { result } = renderHook(() =>
-                useDepositAccounts({ first: 10 }),
-            )
+            const { result } = setupHook({ first: 10 })
 
             expect(result.current.data?.pageInfo.endCursor).toBe("")
             expect(result.current.data?.pageInfo.startCursor).toBe("")
@@ -201,9 +211,7 @@ describe("useDepositAccounts", () => {
                 createMockReturnValue({ data: mockData }),
             )
 
-            const { result } = renderHook(() =>
-                useDepositAccounts({ first: 10 }),
-            )
+            const { result } = setupHook({ first: 10 })
 
             expect(result.current.data?.pageInfo.endCursor).toBe("")
             expect(result.current.data?.pageInfo.startCursor).toBe("")
@@ -229,9 +237,7 @@ describe("useDepositAccounts", () => {
                 createMockReturnValue({ data: mockData }),
             )
 
-            const { result } = renderHook(() =>
-                useDepositAccounts({ first: 10 }),
-            )
+            const { result } = setupHook({ first: 10 })
 
             expect(result.current.data?.pageInfo).toEqual(pageInfo)
         })
@@ -243,9 +249,7 @@ describe("useDepositAccounts", () => {
                 createMockReturnValue({ loading: true }),
             )
 
-            const { result } = renderHook(() =>
-                useDepositAccounts({ first: 10 }),
-            )
+            const { result } = setupHook({ first: 10 })
 
             expect(result.current.loading).toBe(true)
         })
@@ -257,9 +261,7 @@ describe("useDepositAccounts", () => {
                 createMockReturnValue({ error: mockError as any }),
             )
 
-            const { result } = renderHook(() =>
-                useDepositAccounts({ first: 10 }),
-            )
+            const { result } = setupHook({ first: 10 })
 
             expect(result.current.error).toBe(mockError)
         })
@@ -271,9 +273,7 @@ describe("useDepositAccounts", () => {
                 createMockReturnValue({ fetchMore: mockFetchMore }),
             )
 
-            const { result } = renderHook(() =>
-                useDepositAccounts({ first: 10 }),
-            )
+            const { result } = setupHook({ first: 10 })
 
             expect(result.current.fetchMore).toBe(mockFetchMore)
         })
@@ -492,9 +492,7 @@ describe("useDepositAccounts", () => {
                 createMockReturnValue({ data: mockData }),
             )
 
-            const { result } = renderHook(() =>
-                useDepositAccounts({ first: 10 }),
-            )
+            const { result } = setupHook({ first: 10 })
 
             expect(result.current.data?.edges).toHaveLength(1)
             expect(result.current.data?.edges[0].node.email).toBe(
@@ -535,9 +533,7 @@ describe("useDepositAccounts", () => {
                 createMockReturnValue({ data: mockData }),
             )
 
-            const { result } = renderHook(() =>
-                useDepositAccounts({ first: 10 }),
-            )
+            const { result } = setupHook({ first: 10 })
 
             expect(result.current.data?.edges).toHaveLength(3)
             expect(result.current.data?.edges[0].node.status).toBe(
@@ -567,9 +563,7 @@ describe("useDepositAccounts", () => {
                 createMockReturnValue({ data: mockData }),
             )
 
-            const { result } = renderHook(() =>
-                useDepositAccounts({ first: 10 }),
-            )
+            const { result } = setupHook({ first: 10 })
 
             expect(result.current.data?.edges[0].node.balance).toEqual({
                 __typename: "DepositAccountBalance",
