@@ -3,7 +3,7 @@
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@lana/web/ui/sidebar"
 
 import { CommandMenu } from "./command-menu"
-import CreateButton, { CreateContextProvider } from "./create"
+import { CreateContextProvider } from "./create"
 import { DynamicBreadcrumb } from "./dynamic-breadcrumb"
 
 import { AppSidebar } from "@/components/app-sidebar"
@@ -13,6 +13,7 @@ import { SearchAndCommand } from "@/components/search-and-command"
 import { useCommandMenu } from "@/hooks/use-command-menu"
 
 import { env } from "@/env"
+import ContextMenuCreateActionsButton from "@/components/context-menu-actions/components/button"
 
 export const AppLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
   const appVersion = env.NEXT_PUBLIC_APP_VERSION
@@ -33,7 +34,7 @@ export const AppLayout = ({ children }: Readonly<{ children: React.ReactNode }>)
                 </div>
                 <div className="flex items-center gap-2 flex-1 justify-end">
                   <SearchAndCommand onOpenCommandPalette={openCommandMenu} />
-                  <CreateButton />
+                  <ContextMenuCreateActionsButton />
                 </div>
               </header>
               <RealtimePriceUpdates />
