@@ -57,6 +57,7 @@ export const DetailsGroup: React.FC<DetailsGroupProps> = ({
           layout === "vertical" && "items-start",
           className,
         )}
+        data-testid="details-group"
       >
         {childrenArray}
       </div>

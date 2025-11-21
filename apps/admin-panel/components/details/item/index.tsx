@@ -51,9 +51,9 @@ export const DetailItem: React.FC<DetailItemProps> = ({
     <div
       className={styles.container}
       onClick={onClick || undefined}
-      data-testid={labelTestId}
+      data-testid="detail-item"
     >
-      <div className={styles.label}>{label}</div>
+      <div className={styles.label} data-testid={labelTestId}>{label}</div>
       <div className={styles.value} data-testid={valueTestId}>
         {value}
       </div>

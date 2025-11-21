@@ -126,11 +126,11 @@ export const DetailsCard: React.FC<DetailsCardProps> = ({
   )
 
   if (variant === "container") {
-    return <div className={cn(containerVariants({ variant }), className)}>{content}</div>
+    return <div className={cn(containerVariants({ variant }), className)} data-testid="details-card">{content}</div>
   }
 
   return (
-    <Card className={cn(containerVariants({ variant }), className)}>
+    <Card className={cn(containerVariants({ variant }), className)} data-testid="details-card">
       <CardHeader>
         <div className="flex items-center justify-between w-full">
           <div className="space-y-1.5">
