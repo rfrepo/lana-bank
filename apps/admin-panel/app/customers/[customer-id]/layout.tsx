@@ -9,6 +9,7 @@ import { ScrollArea, ScrollBar } from "@lana/web/ui/scroll-area"
 
 import { CustomerDetailsCard } from "./details"
 import { KycStatus } from "./kyc-status"
+import DepositAccountCard from "./deposit-account-card"
 
 import { useTabNavigation } from "@/hooks/use-tab-navigation"
 import {
@@ -33,6 +34,14 @@ gql`
       customerType
       createdAt
       publicId
+      depositAccount {
+        publicId
+        status
+        balance {
+          settled
+          pending
+        }
+      }
     }
   }
 `
@@ -48,7 +57,6 @@ export default function CustomerLayout({
   const navTranslations = useTranslations("Sidebar.navItems")
 
   const TABS = [
-    { id: "1", url: "/", tabLabel: t("tabs.transactions") },
     { id: "2", url: "/credit-facilities", tabLabel: t("tabs.creditFacilities") },
     {
       id: "3",
@@ -87,9 +95,9 @@ export default function CustomerLayout({
           title: <PublicIdBadge publicId={data.customerByPublicId.publicId} />,
           href: `/customers/${customerId}`,
         },
-        ...(currentTabData?.url === "/"
-          ? []
-          : [{ title: currentTabData?.tabLabel ?? "", isCurrentPage: true as const }]),
+        ...(currentTabData
+          ? [{ title: currentTabData.tabLabel ?? "", isCurrentPage: true as const }]
+          : []),
       ])
     }
     return () => {
@@ -107,9 +115,10 @@ export default function CustomerLayout({
       <CustomerDetailsCard customer={data.customerByPublicId} />
       <div className="flex flex-col md:flex-row w-full gap-2 my-2">
         <KycStatus customerId={data.customerByPublicId.customerId} />
+        <DepositAccountCard depositAccount={data.customerByPublicId.depositAccount} />
       </div>
       <Tabs
-        defaultValue={TABS[0].url}
+        defaultValue="/credit-facilities"
         value={currentTab}
         onValueChange={handleTabChange}
         className="mt-2"

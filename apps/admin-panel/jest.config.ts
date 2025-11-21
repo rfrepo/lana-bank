@@ -13,7 +13,7 @@ const customJestConfig: Config = {
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/$1',
   },
-  testMatch: ['**/__tests__/**/*.test.[jt]s?(x)'],
+  testMatch: ['**/__tests__/**/*.test.[jt]s?(x)', '**/?(*.)+(test).[jt]s?(x)'],
   transformIgnorePatterns: [
     'node_modules/(?!(?:@faker-js|@apollo|next-intl|use-intl|@lana|graphql|ts-invariant)/)',
   ],

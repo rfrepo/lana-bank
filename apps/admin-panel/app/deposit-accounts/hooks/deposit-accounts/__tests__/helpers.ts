@@ -208,3 +208,5 @@ export const createExpectedPaginatedData = (
     }
 }
 
+export { setupHook } from "./setup-hook"
+

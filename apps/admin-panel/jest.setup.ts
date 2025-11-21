@@ -1,5 +1,7 @@
 import '@testing-library/jest-dom'
 
+import { jest } from '@jest/globals'
+
 // Mock window.matchMedia for tests
 Object.defineProperty(window, 'matchMedia', {
     writable: true,
@@ -15,9 +17,19 @@ Object.defineProperty(window, 'matchMedia', {
     })),
 })
 
-// Mock next-intl globally to avoid ESM transformation issues
+// Mock next-intl globally with trackable mock function
+const mockUseTranslations = jest.fn(() => {
+    const mockT = jest.fn((key: string) => {
+        // Extract the last segment of the key (e.g., "fields.pendingBalance" -> "pendingBalance")
+        const keyParts = key.split('.')
+        const lastKey = keyParts[keyParts.length - 1]
+        return `t-${lastKey}`
+    })
+    return mockT
+})
+
 jest.mock('next-intl', () => ({
-    useTranslations: jest.fn((namespace: string) => (key: string) => `${namespace}.${key}`),
+    useTranslations: mockUseTranslations,
     useFormatter: jest.fn(() => ({
         dateTime: jest.fn(),
         number: jest.fn(),
@@ -25,6 +37,9 @@ jest.mock('next-intl', () => ({
     })),
     NextIntlClientProvider: jest.fn(({ children }) => children),
 }))
+
+// Export for use in tests that need to track translation calls
+export { mockUseTranslations }
 
 // Mock Next.js navigation globally
 jest.mock('next/navigation', () => {
@@ -47,9 +62,10 @@ jest.mock('next/navigation', () => {
 jest.mock('@apollo/client', () => {
     const actualApollo = jest.requireActual('@apollo/client')
     return {
-        ...actualApollo,
+        ...(actualApollo as Record<string, unknown>),
         gql: jest.fn(),
         ApolloProvider: jest.fn(({ children }) => children),
+        useApolloClient: jest.fn(),
         useQuery: jest.fn(() => ({
             data: null,
             loading: false,
@@ -63,5 +79,8 @@ jest.mock('@apollo/client', () => {
         ]),
     }
 })
+
+// Mock sonner globally (manual mock from __mocks__)
+jest.mock('sonner')
 
 
