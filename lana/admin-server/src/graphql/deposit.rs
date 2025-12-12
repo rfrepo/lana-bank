@@ -7,7 +7,12 @@ use super::loader::LanaDataLoader;
 pub use super::deposit_account::DepositAccount;
 
 pub use lana_app::{
-    deposit::{Deposit as DomainDeposit, DepositStatus, DepositsByCreatedAtCursor},
+    deposit::{
+        Deposit as DomainDeposit,
+        DepositStatus,
+        DepositsByCreatedAtCursor,
+        DepositAccountsByCreatedAtCursor,
+    },
     public_id::PublicId,
 };
 

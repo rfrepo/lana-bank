@@ -25,6 +25,7 @@ import {
   Building2,
   FileSignature,
   Clock,
+  Wallet,
 } from "lucide-react"
 import { useTranslations } from "next-intl"
 
@@ -53,6 +54,10 @@ export function useNavItems() {
     { title: t("creditFacilities"), url: "/credit-facilities", icon: Building2 },
     { title: t("disbursals"), url: "/disbursals", icon: ClipboardList },
     { title: t("termTemplates"), url: "/terms-templates", icon: LayoutTemplate },
+  ]
+
+  const navAccountsItems: NavItem[] = [
+    { title: t("depositAccounts"), url: "/deposit-accounts", icon: Wallet },
   ]
 
   const navTransactionItems: NavItem[] = [
@@ -98,6 +103,7 @@ export function useNavItems() {
   const allNavItems: NavItem[] = [
     ...navDashboardItems,
     ...navLoansItems,
+    ...navAccountsItems,
     ...navTransactionItems,
     ...navAdminItems,
     ...navFinanceItems,
@@ -117,6 +123,7 @@ export function useNavItems() {
   return {
     navDashboardItems,
     navLoansItems,
+    navAccountsItems,
     navTransactionItems,
     navAdminItems,
     navFinanceItems,
