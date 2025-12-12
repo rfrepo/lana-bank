@@ -72,6 +72,7 @@ interface PaginatedTableProps<T> {
   style?: "compact" | "comfortable"
   noDataText?: string
   subRows?: (record: T) => T[]
+  dataTestId?: string
 }
 
 const PaginatedTable = <T,>({
@@ -89,6 +90,7 @@ const PaginatedTable = <T,>({
   style = "comfortable",
   noDataText,
   subRows,
+  dataTestId,
 }: PaginatedTableProps<T>): React.ReactElement => {
   const isMobile = useBreakpointDown("md")
   const t = useTranslations("PaginatedTable")
@@ -439,6 +441,7 @@ const PaginatedTable = <T,>({
             size="sm"
             onClick={handlePreviousPage}
             disabled={currentPage === 1}
+            data-testid="pagination-previous"
           >
             <HiChevronLeft className="h-4 w-4" />
           </Button>
@@ -450,6 +453,7 @@ const PaginatedTable = <T,>({
             size="sm"
             onClick={handleNextPage}
             disabled={displayData.length < pageSize && !data?.pageInfo.hasNextPage}
+            data-testid="pagination-next"
           >
             <HiChevronRight className="h-4 w-4" />
           </Button>
@@ -462,6 +466,7 @@ const PaginatedTable = <T,>({
     <>
       <div
         ref={tableRef}
+        data-testid={dataTestId}
         className={`overflow-x-auto rounded-md focus:outline-none ${style === "comfortable" ? "border" : ""}`}
         tabIndex={0}
         role="grid"
@@ -510,9 +515,8 @@ const PaginatedTable = <T,>({
                           <DropdownMenuTrigger asChild>
                             <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
                               <HiFilter
-                                className={`h-4 w-4 ${
-                                  filterState[col.key] ? "text-blue-500" : ""
-                                }`}
+                                className={`h-4 w-4 ${filterState[col.key] ? "text-blue-500" : ""
+                                  }`}
                               />
                             </Button>
                           </DropdownMenuTrigger>
@@ -550,9 +554,8 @@ const PaginatedTable = <T,>({
                   data-testid={`table-row-${idx}`}
                   onClick={() => onClick?.(node)}
                   tabIndex={0}
-                  className={`${onClick ? "cursor-pointer" : ""} ${
-                    focusedRowIndex === idx ? "bg-muted" : ""
-                  } hover:bg-muted/50 transition-colors outline-none`}
+                  className={`${onClick ? "cursor-pointer" : ""} ${focusedRowIndex === idx ? "bg-muted" : ""
+                    } hover:bg-muted/50 transition-colors outline-none`}
                   onFocus={() => setFocusedRowIndex(idx)}
                   role="row"
                   aria-selected={focusedRowIndex === idx}
@@ -593,9 +596,8 @@ const PaginatedTable = <T,>({
                       key={`sub-row-${idx}-${subIdx}`}
                       onClick={() => onClick?.(subRow)}
                       tabIndex={0}
-                      className={`${onClick ? "cursor-pointer" : ""} ${
-                        focusedRowIndex === idx ? "bg-muted" : ""
-                      } hover:bg-muted/50 transition-colors outline-none`}
+                      className={`${onClick ? "cursor-pointer" : ""} ${focusedRowIndex === idx ? "bg-muted" : ""
+                        } hover:bg-muted/50 transition-colors outline-none`}
                     >
                       {columns.map((col, colIdx) => (
                         <TableCell
@@ -638,6 +640,7 @@ const PaginatedTable = <T,>({
             size="sm"
             onClick={handlePreviousPage}
             disabled={currentPage === 1}
+            data-testid="pagination-previous"
           >
             <HiChevronLeft className="h-4 w-4" />
           </Button>
@@ -651,6 +654,7 @@ const PaginatedTable = <T,>({
             disabled={
               !loading && displayData.length < pageSize && !data?.pageInfo.hasNextPage
             }
+            data-testid="pagination-next"
           >
             <HiChevronRight className="h-4 w-4" />
           </Button>

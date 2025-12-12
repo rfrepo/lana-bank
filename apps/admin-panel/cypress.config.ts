@@ -52,6 +52,8 @@ export default defineConfig({
       "cypress/e2e/terms-templates.cy.ts",
       "cypress/e2e/governance.cy.ts",
       "cypress/e2e/reporting.cy.ts",
+      "cypress/e2e/deposit-accounts.cy.ts",
+      "cypress/e2e/deposit-account-details.cy.ts",
       "cypress/e2e/chart-of-accounts.cy.ts",
       "cypress/e2e/trial-balance.cy.ts",
       "cypress/e2e/balance-sheet.cy.ts",
@@ -72,7 +74,7 @@ export default defineConfig({
       TEST_LANGUAGE: "es",
       GOOGLE_CLOUD_AVAILABLE:
         process.env.GOOGLE_APPLICATION_CREDENTIALS &&
-        process.env.GOOGLE_APPLICATION_CREDENTIALS.trim() !== ""
+          process.env.GOOGLE_APPLICATION_CREDENTIALS.trim() !== ""
           ? true
           : false,
     },

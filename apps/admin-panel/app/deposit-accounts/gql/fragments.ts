@@ -1,0 +1,5 @@
+export { DEPOSIT_ACCOUNT_LIST_FRAGMENT } from "./deposit-account-list-fragment"
+export { DEPOSIT_ACCOUNT_DETAILS_PAGE_FRAGMENT } from "./deposit-account-details-page-fragment"
+export { DEPOSIT_ACCOUNT_HISTORY_ENTRY_FRAGMENT } from "./deposit-account-history-entry-fragment"
+export { DEPOSIT_ACCOUNT_HISTORY_CONNECTION_FRAGMENT } from "./deposit-account-history-connection-fragment"
+export { DEPOSIT_ACCOUNT_HISTORY_FRAGMENT } from "./deposit-account-history-fragment"
