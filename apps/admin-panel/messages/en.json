@@ -140,6 +140,7 @@
   "Sidebar": {
     "labels": {
       "loans": "Loans",
+      "accounts": "Accounts",
       "transactions": "Transactions",
       "administration": "Administration",
       "financialReports": "Financial Reports",
@@ -158,6 +159,7 @@
       "policies": "Policies",
       "deposits": "Deposits",
       "withdrawals": "Withdrawals",
+      "depositAccounts": "Deposit Accounts",
       "auditLogs": "Audit Logs",
       "committees": "Committees",
       "chartOfAccounts": "Chart of Accounts",
@@ -280,7 +282,6 @@
     "CustomerDetails": {
       "layout": {
         "tabs": {
-          "transactions": "Transactions",
           "creditFacilities": "Credit Facilities",
           "pendingCreditFacilities": "Pending Credit Facilities",
           "creditFacilityProposals": "Credit Facility Proposals",
@@ -354,6 +355,7 @@
           "inactive": "Inactive"
         },
         "buttons": {
+          "viewAccount": "View Deposit Account",
           "viewLedgerAccount": "View Ledger Account",
           "freezeDepositAccount": "Freeze Deposit Account",
           "unfreezeDepositAccount": "Unfreeze Deposit Account"
@@ -419,25 +421,6 @@
         "actions": {
           "update": "Update",
           "updating": "Updating..."
-        }
-      },
-      "transactions": {
-        "title": "Transactions",
-        "description": "Transactions for this Customer",
-        "table": {
-          "headers": {
-            "date": "Date",
-            "type": "Type",
-            "amount": "Amount",
-            "status": "Status"
-          },
-          "types": {
-            "deposit": "Deposit",
-            "withdrawal": "Withdrawal",
-            "disbursal": "Disbursal",
-            "payment": "Payment"
-          },
-          "empty": "No transactions found"
         }
       },
       "creditFacilities": {
@@ -1466,6 +1449,97 @@
       }
     }
   },
+  "DepositAccounts": {
+    "title": "Deposit Accounts",
+    "description": "View and manage all deposit accounts",
+    "table": {
+      "headers": {
+        "depositAccountId": "Deposit Account ID",
+        "customerName": "Customer",
+        "settledBalance": "Settled Balance",
+        "pendingBalance": "Pending Balance",
+        "status": "Status"
+      },
+      "noData": "No deposit accounts found"
+    },
+    "errors": {
+      "general": "Failed to load deposit accounts"
+    },
+    "DepositAccountDetails": {
+      "title": "Account",
+      "labels": {
+        "checkingSettled": "Checking Settled Balance (USD)",
+        "pendingWithdrawals": "Pending Withdrawals (USD)",
+        "status": "Status"
+      },
+      "fields": {
+        "checkingSettled": "Checking Settled Balance",
+        "pendingWithdrawals": "Pending Withdrawals",
+        "status": "Status"
+      },
+      "buttons": {
+        "viewLedgerAccount": "View Ledger Account",
+        "freezeDepositAccount": "Freeze Deposit Account",
+        "unfreezeDepositAccount": "Unfreeze Deposit Account"
+      },
+      "errors": {
+        "notFound": "Deposit Account Not Found",
+        "notFoundDescription": "The deposit account you are looking for could not be found.",
+        "backToDepositAccounts": "Back to Deposit Accounts",
+        "loadError": "An error occurred while loading the deposit account."
+      },
+      "transactions": {
+        "title": "Transactions",
+        "description": "Transactions for this Deposit Account",
+        "table": {
+          "headers": {
+            "date": "Date",
+            "type": "Type",
+            "amount": "Amount",
+            "status": "Status"
+          },
+          "types": {
+            "deposit": "Deposit",
+            "withdrawal": "Withdrawal",
+            "disbursal": "Disbursal",
+            "payment": "Payment"
+          },
+          "empty": "No transactions found"
+        }
+      }
+    },
+    "DepositAccountStatus": {
+      "active": "Active",
+      "frozen": "Frozen",
+      "inactive": "Inactive"
+    },
+    "CustomerCard": {
+      "title": "Customer",
+      "fields": {
+        "email": "Email",
+        "customerTypeLabel": "Customer Type",
+        "customerType": {
+          "individual": "Individual",
+          "governmentEntity": "Government Entity",
+          "privateCompany": "Private Company",
+          "bank": "Bank",
+          "financialInstitution": "Financial Institution",
+          "foreignAgency": "Foreign Agency or Subsidiary",
+          "nonDomiciledCompany": "Non-Domiciled Company"
+        },
+        "activityLabel": "Activity",
+        "activity": {
+          "active": "Active",
+          "inactive": "Inactive",
+          "suspended": "Suspended"
+        },
+        "createdAt": "Created At"
+      },
+      "buttons": {
+        "viewCustomer": "View Customer"
+      }
+    }
+  },
   "Withdrawals": {
     "title": "Withdrawals",
     "description": "Money taken out from customer's accounts",
@@ -2283,7 +2357,7 @@
   "Auth": {
     "IdleSessionDialog": {
       "title": "Session will expire soon",
-      "description": "You’ll be logged out in {seconds}s due to inactivity.",
+      "description": "You'll be logged out in {seconds}s due to inactivity.",
       "buttons": {
         "logout": "Log out",
         "staySignedIn": "Stay signed in"

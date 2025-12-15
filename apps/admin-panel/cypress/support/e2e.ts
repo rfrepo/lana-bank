@@ -27,6 +27,27 @@ Cypress.on("window:before:load", (win) => {
     }
   `
   win.document.head.appendChild(style)
+
+  const originalMeasure = win.performance.measure.bind(win.performance)
+  win.performance.measure = (...args) => {
+    try {
+      return originalMeasure(...args)
+    } catch (err) {
+      console.error("Error in performance.measure:", err)
+      const fallbackMeasureName = `fallback-${Date.now()}`
+      return originalMeasure(fallbackMeasureName)
+    }
+  }
+})
+
+Cypress.on("uncaught:exception", (err) => {
+  if (
+    err.message.includes("cannot have a negative time stamp") ||
+    err.message.includes("Failed to execute 'measure' on 'Performance'")
+  ) {
+    return false
+  }
+  return true
 })
 
 const testLanguage = Cypress.env("TEST_LANGUAGE")

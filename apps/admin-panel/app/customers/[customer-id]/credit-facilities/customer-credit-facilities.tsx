@@ -31,7 +31,7 @@ gql`
   }
 `
 
-export default function CustomerCreditFacilitiesPage({
+export default function CustomerCreditFacilities({
   params,
 }: {
   params: Promise<{ "customer-id": string }>

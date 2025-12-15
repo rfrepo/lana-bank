@@ -1,7 +1,6 @@
 "use client"
 
 import React, { useState } from "react"
-import { gql } from "@apollo/client"
 import { useTranslations } from "next-intl"
 import { toast } from "sonner"
 
@@ -15,45 +14,34 @@ import {
 } from "@lana/web/ui/dialog"
 import { Button } from "@lana/web/ui/button"
 
-import {
-  useDepositAccountFreezeMutation,
-  GetCustomerBasicDetailsQuery,
-  GetCustomerBasicDetailsDocument,
-} from "@/lib/graphql/generated"
+import { useFreezeDepositAccount } from "./hooks/use-freeze-deposit-account"
+
+import { GetDepositAccountDetailsPageQuery } from "@/lib/graphql/generated"
 import { DetailItem, DetailsGroup } from "@/components/details"
 import Balance from "@/components/balance/balance"
 
-gql`
-  mutation DepositAccountFreeze($input: DepositAccountFreezeInput!) {
-    depositAccountFreeze(input: $input) {
-      account {
-        id
-      }
-    }
-  }
-`
-
 type FreezeDepositAccountDialogProps = {
-  setOpenFreezeDialog: (isOpen: boolean) => void
-  openFreezeDialog: boolean
   depositAccountId: string
+  openFreezeDialog: boolean
+  setOpenFreezeDialog: (isOpen: boolean) => void
   balance: NonNullable<
-    NonNullable<GetCustomerBasicDetailsQuery["customerByPublicId"]>["depositAccount"]
+    Extract<
+      NonNullable<GetDepositAccountDetailsPageQuery["publicIdTarget"]>,
+      { __typename: "DepositAccount" }
+    >
   >["balance"]
 }
 
 export const FreezeDepositAccountDialog: React.FC<FreezeDepositAccountDialogProps> = ({
-  setOpenFreezeDialog,
+  balance,
   openFreezeDialog,
   depositAccountId,
-  balance,
+  setOpenFreezeDialog,
 }) => {
-  const t = useTranslations("Customers.CustomerDetails.freezeDepositAccount")
 
-  const [freezeDepositAccount, { loading, reset }] = useDepositAccountFreezeMutation({
-    refetchQueries: [GetCustomerBasicDetailsDocument],
-  })
   const [error, setError] = useState<string | null>(null)
+  const { freezeDepositAccount, loading, reset } = useFreezeDepositAccount()
+  const t = useTranslations("Customers.CustomerDetails.freezeDepositAccount")
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -80,9 +68,9 @@ export const FreezeDepositAccountDialog: React.FC<FreezeDepositAccountDialogProp
   }
 
   const handleCloseDialog = () => {
-    setOpenFreezeDialog(false)
-    setError(null)
     reset()
+    setError(null)
+    setOpenFreezeDialog(false)
   }
 
   return (

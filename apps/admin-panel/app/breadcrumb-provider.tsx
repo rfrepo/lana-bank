@@ -1,6 +1,6 @@
 "use client"
 
-import { createContext, useContext, useState } from "react"
+import { createContext, useContext, useState, useCallback } from "react"
 
 import { usePathname } from "next/navigation"
 
@@ -68,13 +68,14 @@ export function BreadcrumbProvider({ children }: { children: React.ReactNode }) 
 
   const navItemsResult = useNavItems()
   const links = customLinks ?? generateDefaultLinks(pathname, navItemsResult)
+  const resetToDefault = useCallback(() => setCustomLinks(null), [setCustomLinks])
 
   return (
     <BreadcrumbContext.Provider
       value={{
         links,
-        setCustomLinks: (newLinks) => setCustomLinks(newLinks),
-        resetToDefault: () => setCustomLinks(null),
+        setCustomLinks,
+        resetToDefault
       }}
     >
       {children}

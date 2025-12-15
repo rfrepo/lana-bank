@@ -1,8 +1,10 @@
-// eslint-disable-next-line import/no-unassigned-import
+/* eslint-disable import/no-unassigned-import */
 import "cypress-file-upload"
 
 import { t } from "../support/translation"
 import { CustomerType, TermsTemplateCreateInput } from "../../lib/graphql/generated"
+
+import "./commands/translation"
 
 type Customer = {
   customerId: string
@@ -126,18 +128,33 @@ Cypress.Commands.add(
         }
       }
     `
+    const fetchCustomerWithDeposit = (
+      id: string,
+      attempts = 6,
+    ): Cypress.Chainable<Customer> => {
+      if (attempts === 0) {
+        throw new Error("Customer deposit account not provisioned in time")
+      }
+
+      return cy
+        .graphqlRequest<CustomerQueryResponse>(query, { id })
+        .then((resp) => {
+          const customer = resp.data.customer
+          if (customer.depositAccount) {
+            return cy.wrap(customer)
+          }
+
+          return cy.wait(1000).then(() => fetchCustomerWithDeposit(id, attempts - 1))
+        })
+    }
+
     return cy
       .graphqlRequest<CustomerCreateResponse>(mutation, {
         input: { email, telegramId, customerType: CustomerType.Individual },
       })
       .then((response) => {
         const customerId = response.data.customerCreate.customer.customerId
-        return cy
-          .wait(1000) // to make sure deposit account is created
-          .graphqlRequest<CustomerQueryResponse>(query, {
-            id: customerId,
-          })
-          .then((resp) => resp.data.customer)
+        return fetchCustomerWithDeposit(customerId)
       })
   },
 )
@@ -392,7 +409,7 @@ Cypress.Commands.add("KcLogin", (email: string) => {
     })
     .then(({ headers }) => {
       if (headers["set-cookie"]) {
-        ;(headers["set-cookie"] as string[]).forEach((cookieString) => {
+        ; (headers["set-cookie"] as string[]).forEach((cookieString) => {
           const [nameValue, ...attributes] = cookieString.split(";")
           const [name, value] = nameValue.split("=")
           if (
@@ -420,4 +437,4 @@ Cypress.Commands.add("KcLogin", (email: string) => {
     })
 })
 
-export {}
+export { }

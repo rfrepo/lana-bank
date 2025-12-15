@@ -32,6 +32,7 @@ gql`
           customer {
             id
             depositAccount {
+              id
               withdrawals {
                 ...WithdrawalFields
               }

@@ -134,11 +134,13 @@ describe("credit facility", () => {
   it("should create a credit facility proposal and verify initial state", () => {
     cy.visit(`/customers/${customerPublicId}`)
     cy.get('[data-testid="loading-skeleton"]').should("not.exist")
+    cy.get('[role="tab"]').should("be.visible")
+    cy.get('[data-testid="global-create-button"]').should("be.visible")
 
-    cy.get('[data-testid="global-create-button"]').click()
+    cy.get('[data-testid="global-create-button"]').click({ force: true })
     cy.takeScreenshot("01_click_create_proposal_button")
 
-    cy.get('[data-testid="create-credit-facility-button"]').should("be.visible").click()
+    cy.get('[data-testid="facility-amount-input"]', { timeout: 30000 }).should("be.visible")
     cy.takeScreenshot("02_open_proposal_form")
 
     cy.get('[data-testid="facility-amount-input"]').type("5000")

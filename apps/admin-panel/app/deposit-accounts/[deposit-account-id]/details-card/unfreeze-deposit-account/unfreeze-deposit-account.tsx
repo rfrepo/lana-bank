@@ -1,7 +1,6 @@
 "use client"
 
 import React, { useState } from "react"
-import { gql } from "@apollo/client"
 import { useTranslations } from "next-intl"
 import { toast } from "sonner"
 
@@ -15,20 +14,7 @@ import {
 } from "@lana/web/ui/dialog"
 import { Button } from "@lana/web/ui/button"
 
-import {
-  useDepositAccountUnfreezeMutation,
-  GetCustomerBasicDetailsDocument,
-} from "@/lib/graphql/generated"
-
-gql`
-  mutation DepositAccountUnfreeze($input: DepositAccountUnfreezeInput!) {
-    depositAccountUnfreeze(input: $input) {
-      account {
-        id
-      }
-    }
-  }
-`
+import { useUnfreezeDepositAccount } from "./hooks/use-unfreeze-deposit-account"
 
 type UnfreezeDepositAccountDialogProps = {
   setOpenUnfreezeDialog: (isOpen: boolean) => void
@@ -44,9 +30,7 @@ export const UnfreezeDepositAccountDialog: React.FC<UnfreezeDepositAccountDialog
   const t = useTranslations("Customers.CustomerDetails.unfreezeDepositAccount")
   const commonT = useTranslations("Common")
 
-  const [unfreezeDepositAccount, { loading, reset }] = useDepositAccountUnfreezeMutation({
-    refetchQueries: [GetCustomerBasicDetailsDocument],
-  })
+  const { unfreezeDepositAccount, loading, reset } = useUnfreezeDepositAccount()
   const [error, setError] = useState<string | null>(null)
 
   const handleSubmit = async (e: React.FormEvent) => {

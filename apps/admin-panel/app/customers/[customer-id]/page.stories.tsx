@@ -3,25 +3,25 @@ import { MockedProvider } from "@apollo/client/testing"
 
 import CustomerLayout from "./layout"
 
-import CustomerTransactionsPage from "./page"
+import CustomerCreditFacilitiesPage from "./page"
 
 import {
-  GetCustomerTransactionHistoryDocument,
+  GetCustomerCreditFacilitiesDocument,
   GetCustomerBasicDetailsDocument,
   KycVerification,
   Activity,
 } from "@/lib/graphql/generated"
 
 const meta = {
-  title: "Pages/Customers/Customer/Transactions",
-  component: CustomerTransactionsPage,
+  title: "Pages/Customers/Customer",
+  component: CustomerCreditFacilitiesPage,
   parameters: {
     layout: "fullscreen",
     nextjs: {
       appDirectory: true,
     },
   },
-} satisfies Meta<typeof CustomerTransactionsPage>
+} satisfies Meta<typeof CustomerCreditFacilitiesPage>
 
 export default meta
 type Story = StoryObj<typeof meta>
@@ -53,61 +53,33 @@ const layoutMocks = [
   },
 ]
 
-const transactionsMocks = [
+const pageMocks = [
   {
     request: {
-      query: GetCustomerTransactionHistoryDocument,
+      query: GetCustomerCreditFacilitiesDocument,
       variables: {
         id: "4178b451-c9cb-4841-b248-5cc20e7774a6",
       },
     },
     result: {
       data: {
-        customer: {
+        customerByPublicId: {
           id: "Customer:4178b451-c9cb-4841-b248-5cc20e7774a6",
-          deposits: [
+          creditFacilities: [
             {
-              createdAt: "2024-11-25T06:25:30.866119Z",
-              customerId: "4178b451-c9cb-4841-b248-5cc20e7774a6",
-              depositId: "dep-123",
-              reference: "DEP123",
-              amount: 1000,
-            },
-          ],
-          withdrawals: [
-            {
-              status: "COMPLETED",
-              reference: "WIT123",
-              customerId: "4178b451-c9cb-4841-b248-5cc20e7774a6",
-              withdrawalId: "wit-123",
-              createdAt: "2024-11-25T06:25:30.866119Z",
-              amount: 500,
-              customer: {
-                customerId: "4178b451-c9cb-4841-b248-5cc20e7774a6",
-                email: "test@lana.com",
-              },
-            },
-          ],
-          transactions: [
-            {
-              __typename: "Deposit",
-              createdAt: "2024-11-25T06:25:30.866119Z",
-              customerId: "4178b451-c9cb-4841-b248-5cc20e7774a6",
-              depositId: "dep-123",
-              reference: "DEP123",
-              amount: 1000,
-            },
-            {
-              __typename: "Withdrawal",
-              status: "COMPLETED",
-              reference: "WIT123",
-              customerId: "4178b451-c9cb-4841-b248-5cc20e7774a6",
-              withdrawalId: "wit-123",
-              createdAt: "2024-11-25T06:25:30.866119Z",
-              amount: 500,
-              customer: {
-                customerId: "4178b451-c9cb-4841-b248-5cc20e7774a6",
-                email: "test@lana.com",
+              id: "CreditFacility:313789f5-72f7-40bf-8eba-ae5c6b57b588",
+              creditFacilityId: "313789f5-72f7-40bf-8eba-ae5c6b57b588",
+              publicId: "313789f5-72f7-40bf-8eba-ae5c6b57b588",
+              collateralizationState: "NO_COLLATERAL",
+              status: "PENDING_COLLATERALIZATION",
+              activatedAt: "2024-11-25T06:25:30.866119Z",
+              balance: {
+                collateral: {
+                  btcBalance: 0,
+                },
+                outstanding: {
+                  usdBalance: 0,
+                },
               },
             },
           ],
@@ -125,7 +97,7 @@ export const Default: Story = {
     (Story) => (
       <MockedProvider mocks={layoutMocks} addTypename={false}>
         <CustomerLayout params={Promise.resolve(mockParams)}>
-          <MockedProvider mocks={transactionsMocks} addTypename={false}>
+          <MockedProvider mocks={pageMocks} addTypename={false}>
             <Story />
           </MockedProvider>
         </CustomerLayout>

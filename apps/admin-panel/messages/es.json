@@ -140,6 +140,7 @@
   "Sidebar": {
     "labels": {
       "loans": "Préstamos",
+      "accounts": "Cuentas",
       "transactions": "Transacciones",
       "administration": "Administración",
       "financialReports": "Reportes",
@@ -158,6 +159,7 @@
       "policies": "Políticas",
       "deposits": "Depósitos",
       "withdrawals": "Retiros",
+      "depositAccounts": "Cuentas de Depósito",
       "auditLogs": "Registros de Auditoría",
       "committees": "Comités",
       "chartOfAccounts": "Catálogo de Cuentas",
@@ -280,7 +282,6 @@
     "CustomerDetails": {
       "layout": {
         "tabs": {
-          "transactions": "Transacciones",
           "creditFacilities": "Líneas de Crédito",
           "pendingCreditFacilities": "Líneas de Crédito Pendientes",
           "creditFacilityProposals": "Propuestas de Línea de Crédito",
@@ -354,6 +355,7 @@
           "inactive": "Inactivo"
         },
         "buttons": {
+          "viewAccount": "Ver Cuenta de Depósito",
           "viewLedgerAccount": "Ver Cuenta del Libro Mayor",
           "freezeDepositAccount": "Congelar Cuenta de Depósito",
           "unfreezeDepositAccount": "Descongelar Cuenta de Depósito"
@@ -419,25 +421,6 @@
         "actions": {
           "update": "Actualizar",
           "updating": "Actualizando..."
-        }
-      },
-      "transactions": {
-        "title": "Transacciones",
-        "description": "Transacciones para este Cliente",
-        "table": {
-          "headers": {
-            "date": "Fecha",
-            "type": "Tipo",
-            "amount": "Monto",
-            "status": "Estado"
-          },
-          "types": {
-            "deposit": "Depósito",
-            "withdrawal": "Retiro",
-            "disbursal": "Desembolso",
-            "payment": "Pago"
-          },
-          "empty": "No se encontraron transacciones"
         }
       },
       "creditFacilities": {
@@ -1463,6 +1446,97 @@
           "revert": "Revertir",
           "viewOnSumsub": "Ver en Sumsub"
         }
+      }
+    }
+  },
+  "DepositAccounts": {
+    "title": "Cuentas de Depósito",
+    "description": "Ver y gestionar todas las cuentas de depósito",
+    "table": {
+      "headers": {
+        "depositAccountId": "ID de Cuenta de Depósito",
+        "customerName": "Cliente",
+        "settledBalance": "Saldo Liquidado",
+        "pendingBalance": "Saldo Pendiente",
+        "status": "Estado"
+      },
+      "noData": "No se encontraron cuentas de depósito"
+    },
+    "errors": {
+      "general": "Error al cargar las cuentas de depósito"
+    },
+    "DepositAccountDetails": {
+      "title": "Cuenta",
+      "labels": {
+        "checkingSettled": "Saldo Liquidado de Cuenta Corriente (USD)",
+        "pendingWithdrawals": "Retiros Pendientes (USD)",
+        "status": "Estado"
+      },
+      "fields": {
+        "checkingSettled": "Saldo Liquidado de Cuenta Corriente",
+        "pendingWithdrawals": "Retiros Pendientes",
+        "status": "Estado"
+      },
+      "buttons": {
+        "viewLedgerAccount": "Ver Cuenta Contable",
+        "freezeDepositAccount": "Congelar Cuenta de Depósito",
+        "unfreezeDepositAccount": "Descongelar Cuenta de Depósito"
+      },
+      "errors": {
+        "notFound": "Cuenta de Depósito No Encontrada",
+        "notFoundDescription": "La cuenta de depósito que está buscando no se pudo encontrar.",
+        "backToDepositAccounts": "Volver a Cuentas de Depósito",
+        "loadError": "Ocurrió un error al cargar la cuenta de depósito."
+      },
+      "transactions": {
+        "title": "Transacciones",
+        "description": "Transacciones para esta Cuenta de Depósito",
+        "table": {
+          "headers": {
+            "date": "Fecha",
+            "type": "Tipo",
+            "amount": "Monto",
+            "status": "Estado"
+          },
+          "types": {
+            "deposit": "Depósito",
+            "withdrawal": "Retiro",
+            "disbursal": "Desembolso",
+            "payment": "Pago"
+          },
+          "empty": "No se encontraron transacciones"
+        }
+      }
+    },
+    "DepositAccountStatus": {
+      "active": "Activo",
+      "frozen": "Congelado",
+      "inactive": "Inactivo"
+    },
+    "CustomerCard": {
+      "title": "Cliente",
+      "fields": {
+        "email": "Correo Electrónico",
+        "customerTypeLabel": "Tipo de Cliente",
+        "customerType": {
+          "individual": "Individual",
+          "governmentEntity": "Entidad Gubernamental",
+          "privateCompany": "Empresa Privada",
+          "bank": "Banco",
+          "financialInstitution": "Institución Financiera",
+          "foreignAgency": "Agencia o Subsidiaria Extranjera",
+          "nonDomiciledCompany": "Empresa No Domiciliada"
+        },
+        "activityLabel": "Actividad",
+        "activity": {
+          "active": "Activo",
+          "inactive": "Inactivo",
+          "suspended": "Suspendido"
+        },
+        "createdAt": "Fecha de Creación"
+      },
+      "buttons": {
+        "viewCustomer": "Ver Cliente"
       }
     }
   },

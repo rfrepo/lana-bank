@@ -40,9 +40,6 @@ gql`
               deposits {
                 ...DepositFields
               }
-            }
-            depositAccount {
-              id
               balance {
                 settled
                 pending
