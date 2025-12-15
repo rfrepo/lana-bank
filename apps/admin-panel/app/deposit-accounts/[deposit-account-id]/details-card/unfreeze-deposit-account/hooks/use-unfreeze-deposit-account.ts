@@ -1,22 +1,7 @@
 "use client"
 
-import { gql } from "@apollo/client"
+import { GetDepositAccountDetailsPageDocument, useDepositAccountUnfreezeMutation } from "@/app/deposit-accounts/[deposit-account-id]/details-card/unfreeze-deposit-account/hooks/gql/deposit-account-unfreeze-mutation"
 
-import {
-  useDepositAccountUnfreezeMutation,
-  GetDepositAccountDetailsPageDocument,
-} from "@/lib/graphql/generated"
-
-gql`
-  mutation DepositAccountUnfreeze($input: DepositAccountUnfreezeInput!) {
-    depositAccountUnfreeze(input: $input) {
-      account {
-        id
-        depositAccountId
-      }
-    }
-  }
-`
 export function useUnfreezeDepositAccount() {
   const [unfreezeDepositAccount, { loading, reset }] = useDepositAccountUnfreezeMutation({
     refetchQueries: [GetDepositAccountDetailsPageDocument],

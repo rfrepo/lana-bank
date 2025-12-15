@@ -3475,6 +3475,8 @@ export type DepositAccountUnfreezeMutationVariables = Exact<{
 
 export type DepositAccountUnfreezeMutation = { __typename?: 'Mutation', depositAccountUnfreeze: { __typename?: 'DepositAccountUnfreezePayload', account: { __typename?: 'DepositAccount', id: string, depositAccountId: string } } };
 
+export type DepositAccountDetailsPageFragmentFragment = { __typename?: 'DepositAccount', id: string, status: DepositAccountStatus, publicId: any, depositAccountId: string, customer: { __typename?: 'Customer', id: string, email: string, activity: Activity, publicId: any, createdAt: any, customerId: string, telegramId: string, customerType: CustomerType }, ledgerAccounts: { __typename?: 'DepositAccountLedgerAccounts', depositAccountId: string, frozenDepositAccountId: string }, balance: { __typename?: 'DepositAccountBalance', settled: UsdCents, pending: UsdCents } };
+
 export type GetDepositAccountDetailsPageQueryVariables = Exact<{
   publicId: Scalars['PublicId']['input'];
 }>;
@@ -3488,6 +3490,27 @@ export type GetDepositAccountDetailsPageQuery = { __typename?: 'Query', publicId
     | { __typename: 'DepositAccount', id: string, status: DepositAccountStatus, publicId: any, depositAccountId: string, customer: { __typename?: 'Customer', id: string, email: string, activity: Activity, publicId: any, createdAt: any, customerId: string, telegramId: string, customerType: CustomerType }, ledgerAccounts: { __typename?: 'DepositAccountLedgerAccounts', depositAccountId: string, frozenDepositAccountId: string }, balance: { __typename?: 'DepositAccountBalance', settled: UsdCents, pending: UsdCents } }
     | { __typename: 'Withdrawal' }
    | null };
+
+type DepositAccountHistoryEntryFields_CancelledWithdrawalEntry_Fragment = { __typename?: 'CancelledWithdrawalEntry', recordedAt: any, withdrawal: { __typename?: 'Withdrawal', id: string, amount: UsdCents, status: WithdrawalStatus, publicId: any, accountId: string, createdAt: any, reference: string, withdrawalId: string } };
+
+type DepositAccountHistoryEntryFields_DepositEntry_Fragment = { __typename?: 'DepositEntry', recordedAt: any, deposit: { __typename?: 'Deposit', id: string, amount: UsdCents, status: DepositStatus, publicId: any, depositId: string, accountId: string, createdAt: any, reference: string } };
+
+type DepositAccountHistoryEntryFields_DisbursalEntry_Fragment = { __typename?: 'DisbursalEntry', recordedAt: any, disbursal: { __typename?: 'CreditFacilityDisbursal', id: string, amount: UsdCents, status: DisbursalStatus, publicId: any, createdAt: any, disbursalId: string } };
+
+type DepositAccountHistoryEntryFields_PaymentEntry_Fragment = { __typename?: 'PaymentEntry', recordedAt: any, payment: { __typename?: 'CreditFacilityPaymentAllocation', id: string, amount: UsdCents, createdAt: any, paymentAllocationId: string } };
+
+type DepositAccountHistoryEntryFields_UnknownEntry_Fragment = { __typename?: 'UnknownEntry' };
+
+type DepositAccountHistoryEntryFields_WithdrawalEntry_Fragment = { __typename?: 'WithdrawalEntry', recordedAt: any, withdrawal: { __typename?: 'Withdrawal', id: string, amount: UsdCents, status: WithdrawalStatus, publicId: any, accountId: string, createdAt: any, reference: string, withdrawalId: string } };
+
+export type DepositAccountHistoryEntryFieldsFragment =
+  | DepositAccountHistoryEntryFields_CancelledWithdrawalEntry_Fragment
+  | DepositAccountHistoryEntryFields_DepositEntry_Fragment
+  | DepositAccountHistoryEntryFields_DisbursalEntry_Fragment
+  | DepositAccountHistoryEntryFields_PaymentEntry_Fragment
+  | DepositAccountHistoryEntryFields_UnknownEntry_Fragment
+  | DepositAccountHistoryEntryFields_WithdrawalEntry_Fragment
+;
 
 export type GetDepositAccountTransactionHistoryQueryVariables = Exact<{
   publicId: Scalars['PublicId']['input'];
@@ -3511,51 +3534,6 @@ export type GetDepositAccountTransactionHistoryQuery = { __typename?: 'Query', p
            }> } }
     | { __typename: 'Withdrawal' }
    | null };
-
-export type DepositAccountDetailsPageFragmentFragment = { __typename?: 'DepositAccount', id: string, status: DepositAccountStatus, publicId: any, depositAccountId: string, customer: { __typename?: 'Customer', id: string, email: string, activity: Activity, publicId: any, createdAt: any, customerId: string, telegramId: string, customerType: CustomerType }, ledgerAccounts: { __typename?: 'DepositAccountLedgerAccounts', depositAccountId: string, frozenDepositAccountId: string }, balance: { __typename?: 'DepositAccountBalance', settled: UsdCents, pending: UsdCents } };
-
-export type DepositAccountHistoryConnectionFieldsFragment = { __typename?: 'DepositAccountHistoryEntryConnection', pageInfo: { __typename?: 'PageInfo', endCursor?: string | null, startCursor?: string | null, hasNextPage: boolean, hasPreviousPage: boolean }, edges: Array<{ __typename?: 'DepositAccountHistoryEntryEdge', cursor: string, node:
-      | { __typename?: 'CancelledWithdrawalEntry', recordedAt: any, withdrawal: { __typename?: 'Withdrawal', id: string, amount: UsdCents, status: WithdrawalStatus, publicId: any, accountId: string, createdAt: any, reference: string, withdrawalId: string } }
-      | { __typename?: 'DepositEntry', recordedAt: any, deposit: { __typename?: 'Deposit', id: string, amount: UsdCents, status: DepositStatus, publicId: any, depositId: string, accountId: string, createdAt: any, reference: string } }
-      | { __typename?: 'DisbursalEntry', recordedAt: any, disbursal: { __typename?: 'CreditFacilityDisbursal', id: string, amount: UsdCents, status: DisbursalStatus, publicId: any, createdAt: any, disbursalId: string } }
-      | { __typename?: 'PaymentEntry', recordedAt: any, payment: { __typename?: 'CreditFacilityPaymentAllocation', id: string, amount: UsdCents, createdAt: any, paymentAllocationId: string } }
-      | { __typename?: 'UnknownEntry' }
-      | { __typename?: 'WithdrawalEntry', recordedAt: any, withdrawal: { __typename?: 'Withdrawal', id: string, amount: UsdCents, status: WithdrawalStatus, publicId: any, accountId: string, createdAt: any, reference: string, withdrawalId: string } }
-     }> };
-
-type DepositAccountHistoryEntryFields_CancelledWithdrawalEntry_Fragment = { __typename?: 'CancelledWithdrawalEntry', recordedAt: any, withdrawal: { __typename?: 'Withdrawal', id: string, amount: UsdCents, status: WithdrawalStatus, publicId: any, accountId: string, createdAt: any, reference: string, withdrawalId: string } };
-
-type DepositAccountHistoryEntryFields_DepositEntry_Fragment = { __typename?: 'DepositEntry', recordedAt: any, deposit: { __typename?: 'Deposit', id: string, amount: UsdCents, status: DepositStatus, publicId: any, depositId: string, accountId: string, createdAt: any, reference: string } };
-
-type DepositAccountHistoryEntryFields_DisbursalEntry_Fragment = { __typename?: 'DisbursalEntry', recordedAt: any, disbursal: { __typename?: 'CreditFacilityDisbursal', id: string, amount: UsdCents, status: DisbursalStatus, publicId: any, createdAt: any, disbursalId: string } };
-
-type DepositAccountHistoryEntryFields_PaymentEntry_Fragment = { __typename?: 'PaymentEntry', recordedAt: any, payment: { __typename?: 'CreditFacilityPaymentAllocation', id: string, amount: UsdCents, createdAt: any, paymentAllocationId: string } };
-
-type DepositAccountHistoryEntryFields_UnknownEntry_Fragment = { __typename?: 'UnknownEntry' };
-
-type DepositAccountHistoryEntryFields_WithdrawalEntry_Fragment = { __typename?: 'WithdrawalEntry', recordedAt: any, withdrawal: { __typename?: 'Withdrawal', id: string, amount: UsdCents, status: WithdrawalStatus, publicId: any, accountId: string, createdAt: any, reference: string, withdrawalId: string } };
-
-export type DepositAccountHistoryEntryFieldsFragment =
-  | DepositAccountHistoryEntryFields_CancelledWithdrawalEntry_Fragment
-  | DepositAccountHistoryEntryFields_DepositEntry_Fragment
-  | DepositAccountHistoryEntryFields_DisbursalEntry_Fragment
-  | DepositAccountHistoryEntryFields_PaymentEntry_Fragment
-  | DepositAccountHistoryEntryFields_UnknownEntry_Fragment
-  | DepositAccountHistoryEntryFields_WithdrawalEntry_Fragment
-;
-
-export type DepositAccountHistoryFieldsFragment = { __typename?: 'DepositAccount', history: { __typename?: 'DepositAccountHistoryEntryConnection', pageInfo: { __typename?: 'PageInfo', endCursor?: string | null, startCursor?: string | null, hasNextPage: boolean, hasPreviousPage: boolean }, edges: Array<{ __typename?: 'DepositAccountHistoryEntryEdge', cursor: string, node:
-        | { __typename?: 'CancelledWithdrawalEntry', recordedAt: any, withdrawal: { __typename?: 'Withdrawal', id: string, amount: UsdCents, status: WithdrawalStatus, publicId: any, accountId: string, createdAt: any, reference: string, withdrawalId: string } }
-        | { __typename?: 'DepositEntry', recordedAt: any, deposit: { __typename?: 'Deposit', id: string, amount: UsdCents, status: DepositStatus, publicId: any, depositId: string, accountId: string, createdAt: any, reference: string } }
-        | { __typename?: 'DisbursalEntry', recordedAt: any, disbursal: { __typename?: 'CreditFacilityDisbursal', id: string, amount: UsdCents, status: DisbursalStatus, publicId: any, createdAt: any, disbursalId: string } }
-        | { __typename?: 'PaymentEntry', recordedAt: any, payment: { __typename?: 'CreditFacilityPaymentAllocation', id: string, amount: UsdCents, createdAt: any, paymentAllocationId: string } }
-        | { __typename?: 'UnknownEntry' }
-        | { __typename?: 'WithdrawalEntry', recordedAt: any, withdrawal: { __typename?: 'Withdrawal', id: string, amount: UsdCents, status: WithdrawalStatus, publicId: any, accountId: string, createdAt: any, reference: string, withdrawalId: string } }
-       }> } };
-
-export type DepositAccountFieldsFragment = { __typename?: 'DepositAccount', id: string, status: DepositAccountStatus, publicId: any, depositAccountId: string, customer: { __typename?: 'Customer', email: string, customerId: string }, balance: { __typename?: 'DepositAccountBalance', settled: UsdCents, pending: UsdCents } };
-
-export type DepositAccountListFieldsFragment = { __typename?: 'DepositAccount', id: string, status: DepositAccountStatus, publicId: any, depositAccountId: string, customer: { __typename?: 'Customer', email: string, customerId: string }, balance: { __typename?: 'DepositAccountBalance', settled: UsdCents, pending: UsdCents } };
 
 export type DepositAccountsQueryVariables = Exact<{
   first: Scalars['Int']['input'];
@@ -4709,14 +4687,6 @@ export const DepositAccountDetailsPageFragmentFragmentDoc = gql`
   }
 }
     ${DepositAccountBalanceFieldsFragmentDoc}`;
-export const PageInfoFieldsFragmentDoc = gql`
-    fragment PageInfoFields on PageInfo {
-  endCursor
-  startCursor
-  hasNextPage
-  hasPreviousPage
-}
-    `;
 export const DepositAccountHistoryEntryFieldsFragmentDoc = gql`
     fragment DepositAccountHistoryEntryFields on DepositAccountHistoryEntry {
   ... on DepositEntry {
@@ -4780,57 +4750,6 @@ export const DepositAccountHistoryEntryFieldsFragmentDoc = gql`
   }
 }
     `;
-export const DepositAccountHistoryConnectionFieldsFragmentDoc = gql`
-    fragment DepositAccountHistoryConnectionFields on DepositAccountHistoryEntryConnection {
-  pageInfo {
-    ...PageInfoFields
-  }
-  edges {
-    cursor
-    node {
-      ...DepositAccountHistoryEntryFields
-    }
-  }
-}
-    ${PageInfoFieldsFragmentDoc}
-${DepositAccountHistoryEntryFieldsFragmentDoc}`;
-export const DepositAccountHistoryFieldsFragmentDoc = gql`
-    fragment DepositAccountHistoryFields on DepositAccount {
-  history(first: $first, after: $after) {
-    ...DepositAccountHistoryConnectionFields
-  }
-}
-    ${DepositAccountHistoryConnectionFieldsFragmentDoc}`;
-export const DepositAccountFieldsFragmentDoc = gql`
-    fragment DepositAccountFields on DepositAccount {
-  id
-  status
-  publicId
-  depositAccountId
-  customer {
-    email
-    customerId
-  }
-  balance {
-    ...DepositAccountBalanceFields
-  }
-}
-    ${DepositAccountBalanceFieldsFragmentDoc}`;
-export const DepositAccountListFieldsFragmentDoc = gql`
-    fragment DepositAccountListFields on DepositAccount {
-  id
-  status
-  publicId
-  customer {
-    email
-    customerId
-  }
-  depositAccountId
-  balance {
-    ...DepositAccountBalanceFields
-  }
-}
-    ${DepositAccountBalanceFieldsFragmentDoc}`;
 export const LedgerTransactionFieldsFragmentDoc = gql`
     fragment LedgerTransactionFields on LedgerTransaction {
   id
@@ -5224,6 +5143,14 @@ export const WithdrawalFieldsFragmentDoc = gql`
       email
     }
   }
+}
+    `;
+export const PageInfoFieldsFragmentDoc = gql`
+    fragment PageInfoFields on PageInfo {
+  endCursor
+  startCursor
+  hasNextPage
+  hasPreviousPage
 }
     `;
 export const ApprovalProcessApproveDocument = gql`
@@ -7404,11 +7331,31 @@ export const GetDepositAccountDetailsPageDocument = gql`
   publicIdTarget(id: $publicId) {
     __typename
     ... on DepositAccount {
-      ...DepositAccountDetailsPageFragment
+      id
+      status
+      publicId
+      depositAccountId
+      customer {
+        id
+        email
+        activity
+        publicId
+        createdAt
+        customerId
+        telegramId
+        customerType
+      }
+      ledgerAccounts {
+        depositAccountId
+        frozenDepositAccountId
+      }
+      balance {
+        ...DepositAccountBalanceFields
+      }
     }
   }
 }
-    ${DepositAccountDetailsPageFragmentFragmentDoc}`;
+    ${DepositAccountBalanceFieldsFragmentDoc}`;
 
 /**
  * __useGetDepositAccountDetailsPageQuery__
@@ -7447,11 +7394,22 @@ export const GetDepositAccountTransactionHistoryDocument = gql`
   publicIdTarget(id: $publicId) {
     __typename
     ... on DepositAccount {
-      ...DepositAccountHistoryFields
+      history(first: $first, after: $after) {
+        pageInfo {
+          ...PageInfoFields
+        }
+        edges {
+          cursor
+          node {
+            ...DepositAccountHistoryEntryFields
+          }
+        }
+      }
     }
   }
 }
-    ${DepositAccountHistoryFieldsFragmentDoc}`;
+    ${PageInfoFieldsFragmentDoc}
+${DepositAccountHistoryEntryFieldsFragmentDoc}`;
 
 /**
  * __useGetDepositAccountTransactionHistoryQuery__
@@ -7493,7 +7451,17 @@ export const DepositAccountsDocument = gql`
     edges {
       cursor
       node {
-        ...DepositAccountListFields
+        id
+        status
+        publicId
+        depositAccountId
+        customer {
+          email
+          customerId
+        }
+        balance {
+          ...DepositAccountBalanceFields
+        }
       }
     }
     pageInfo {
@@ -7501,7 +7469,7 @@ export const DepositAccountsDocument = gql`
     }
   }
 }
-    ${DepositAccountListFieldsFragmentDoc}
+    ${DepositAccountBalanceFieldsFragmentDoc}
 ${PageInfoFieldsFragmentDoc}`;
 
 /**

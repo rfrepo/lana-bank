@@ -1,27 +1,11 @@
 "use client"
 
-import { gql } from "@apollo/client"
-
 import {
-  useGetDepositAccountDetailsPageQuery,
   GetDepositAccountDetailsPageQuery,
   GetDepositAccountDetailsPageQueryVariables,
 } from "@/lib/graphql/generated"
 
-import { DEPOSIT_ACCOUNT_DETAILS_PAGE_FRAGMENT } from "@/app/deposit-accounts/gql/fragments"
-
-gql`
-  query GetDepositAccountDetailsPage($publicId: PublicId!) {
-    publicIdTarget(id: $publicId) {
-      __typename
-      ... on DepositAccount {
-        ...DepositAccountDetailsPageFragment
-      }
-    }
-  }
-  ${DEPOSIT_ACCOUNT_DETAILS_PAGE_FRAGMENT}
-`
-
+import { useGetDepositAccountDetailsPageQuery } from "@/app/deposit-accounts/[deposit-account-id]/hooks/gql/deposite-account-details-page-query" 
 type DepositAccountData = NonNullable<
   Extract<
     NonNullable<GetDepositAccountDetailsPageQuery["publicIdTarget"]>,

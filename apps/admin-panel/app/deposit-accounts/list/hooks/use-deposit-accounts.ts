@@ -2,11 +2,9 @@
 
 import { useCallback } from "react"
 
-import { DepositAccount, useDepositAccountsQuery } from "@/lib/graphql/generated"
+import { useDepositAccountsQuery, DepositAccount } from "./gql/deposit-accounts-query"
 
 import { DEFAULT_PAGESIZE, PaginatedData } from "@/components/paginated-table"
-
-import "@/app/deposit-accounts/list/hooks/gql/queries" // eslint-disable-line import/no-unassigned-import
 
 export function useDepositAccounts() {
   const { data, loading, error, fetchMore } = useDepositAccountsQuery({

@@ -1,25 +1,8 @@
 "use client"
 
-import { gql } from "@apollo/client"
-
-import {
-  useGetDepositAccountTransactionHistoryQuery,
-} from "@/lib/graphql/generated"
+import { useGetDepositAccountTransactionHistoryQuery } from "./gql/deposit-account-transaction-history-query"
 
 import { DEFAULT_PAGESIZE } from "@/components/paginated-table"
-import { DEPOSIT_ACCOUNT_HISTORY_FRAGMENT } from "@/app/deposit-accounts/gql/fragments"
-
-gql`
-  query GetDepositAccountTransactionHistory($publicId: PublicId!, $first: Int!, $after: String) {
-    publicIdTarget(id: $publicId) {
-      __typename
-      ... on DepositAccount {
-        ...DepositAccountHistoryFields
-      }
-    }
-  }
-  ${DEPOSIT_ACCOUNT_HISTORY_FRAGMENT}
-`
 
 export function useDepositAccountTransactionHistory(
   publicId: string,
