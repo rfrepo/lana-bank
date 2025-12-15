@@ -13,7 +13,7 @@ import {
 } from "@/lib/graphql/generated"
 
 const meta = {
-  title: "Pages/Customers/Customer/CreditFacilities",
+  title: "Pages/Customers/Customer",
   component: CustomerCreditFacilitiesPage,
   parameters: {
     layout: "fullscreen",

@@ -63,7 +63,8 @@ const baseMocks = [
       query: GetDepositAccountTransactionHistoryDocument,
       variables: {
         publicId: mockPublicId,
-        first: 100,
+        first: 10,
+        after: undefined,
       },
     },
     result: {
