@@ -8,18 +8,17 @@ export type HistoryNode = DepositAccountHistoryEntryFieldsFragment
 
 export const VALID_ENTRY_TYPES = [
   "DepositEntry",
+  "PaymentEntry",
+  "DisbursalEntry",
   "WithdrawalEntry",
   "CancelledWithdrawalEntry",
-  "DisbursalEntry",
-  "PaymentEntry",
 ] as const
 
 type HistoryConnection = DepositAccountHistoryConnectionFieldsFragment
 
 export const filterValidEntries = (
   history: HistoryConnection | null,
-): HistoryConnection["edges"] =>
-  history?.edges.filter(({ node }) => {
+): HistoryConnection["edges"] => history?.edges.filter(({ node }) => {
     if (!node.__typename) return false
     return VALID_ENTRY_TYPES.some((validType) => validType === node.__typename)
   }) ?? []
@@ -30,25 +29,21 @@ export const transformHistoryToPaginatedData = (
 ): PaginatedData<HistoryNode> | undefined =>
   history
     ? {
-      edges: validEntries as PaginatedData<HistoryNode>["edges"],
       pageInfo: {
         ...history.pageInfo,
         endCursor: history.pageInfo.endCursor ?? "",
         startCursor: history.pageInfo.startCursor ?? "",
       },
+      edges: validEntries as PaginatedData<HistoryNode>["edges"],
     }
     : undefined
 
 export const getNavigateUrl = (entry: HistoryNode): string | null => {
   switch (entry.__typename) {
-    case "DepositEntry":
-      return `/deposits/${entry.deposit.publicId}`
+    case "DepositEntry": return `/deposits/${entry.deposit.publicId}`
+    case "DisbursalEntry": return `/disbursals/${entry.disbursal.publicId}`
     case "WithdrawalEntry":
-    case "CancelledWithdrawalEntry":
-      return `/withdrawals/${entry.withdrawal.publicId}`
-    case "DisbursalEntry":
-      return `/disbursals/${entry.disbursal.publicId}`
-    default:
-      return null
+    case "CancelledWithdrawalEntry": return `/withdrawals/${entry.withdrawal.publicId}`
+    default: return null
   }
 }
