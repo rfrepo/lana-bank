@@ -60,7 +60,7 @@ export default function CustomerLayout({
   const tDepositAccount = useTranslations("Customers.CustomerDetails.depositAccount")
 
   const TABS = [
-    { id: "1", url: "/credit-facilities", tabLabel: t("tabs.creditFacilities") },
+    { id: "1", url: "/", tabLabel: t("tabs.creditFacilities") },
     {
       id: "2",
       url: "/pending-credit-facilities",
@@ -98,7 +98,7 @@ export default function CustomerLayout({
           title: <PublicIdBadge publicId={data.customerByPublicId.publicId} />,
           href: `/customers/${customerId}`,
         },
-        ...(currentTabData
+        ...(currentTabData && currentTabData?.url !== "/"
           ? [{ title: currentTabData.tabLabel ?? "", isCurrentPage: true as const }]
           : []),
       ])

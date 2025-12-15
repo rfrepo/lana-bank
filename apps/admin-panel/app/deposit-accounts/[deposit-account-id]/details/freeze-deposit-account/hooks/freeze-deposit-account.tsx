@@ -54,7 +54,7 @@ export const FreezeDepositAccountDialog: React.FC<FreezeDepositAccountDialogProp
   const [freezeDepositAccount, { loading, reset }] = useDepositAccountFreezeMutation({
     refetchQueries: [GetCustomerBasicDetailsDocument],
   })
-  
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError(null)

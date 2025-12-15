@@ -1,6 +1,7 @@
 "use client"
 
 import { use } from "react"
+import CustomerCreditFacilities from "./credit-facilities/customer-credit-facilities"
 
 export default function CustomerTransactionsPage({
   params,
@@ -9,5 +10,7 @@ export default function CustomerTransactionsPage({
 }) {
   use(params)
 
-  return <div className="space-y-6"></div>
+  return <div className="space-y-6">
+    <CustomerCreditFacilities params={params} />
+  </div>
 }
