@@ -1,11 +1,12 @@
 "use client"
 
+import { useGetDepositAccountDetailsPageQuery } from "./gql/deposit-account-details-page-query"
+
 import {
   GetDepositAccountDetailsPageQuery,
   GetDepositAccountDetailsPageQueryVariables,
 } from "@/lib/graphql/generated"
 
-import { useGetDepositAccountDetailsPageQuery } from "@/app/deposit-accounts/[deposit-account-id]/hooks/gql/deposit-account-details-page-query" 
 type DepositAccountData = NonNullable<
   Extract<
     NonNullable<GetDepositAccountDetailsPageQuery["publicIdTarget"]>,
